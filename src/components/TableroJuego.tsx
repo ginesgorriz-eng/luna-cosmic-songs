@@ -88,7 +88,8 @@ export default function TableroJuego({
   );
 
   // Get current phase songs
-  const currentPhaseSongs = phases[currentPhaseIndex] || [];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const currentPhaseSongs = useMemo(() => phases[currentPhaseIndex] || [], [phases, currentPhaseIndex]);
 
   // Initialize column states for current phase
   useEffect(() => {
@@ -339,13 +340,6 @@ export default function TableroJuego({
 
   // Get all song IDs for sortable context
   const allSongIds = currentPhaseSongs.map(s => s.id);
-  const allLineIds = useMemo(
-    () => [
-      ...availableLines.map(l => l.id),
-      ...allSongIds.flatMap(songId => columnStates[songId]?.map(l => l.id) || []),
-    ],
-    [availableLines, columnStates, allSongIds]
-  );
 
   if (!phasesReady) {
     return (
