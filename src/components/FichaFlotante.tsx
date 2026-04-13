@@ -90,7 +90,7 @@ export default function FichaFlotante({
         scale: 1.15,
         rotate: 5,
         zIndex: 1000,
-        boxShadow: '0 20px 60px rgba(168, 85, 247, 0.4)',
+        boxShadow: '0 10px 30px rgba(255, 255, 255, 0.15)',
       }}
       onDoubleClick={onDoubleClick}
       className={`

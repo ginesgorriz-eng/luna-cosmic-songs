@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Starfield from "@/components/Starfield";
@@ -9,7 +9,7 @@ import { useSpotify } from "@/contexts/SpotifyContext";
 
 export default function HomePage() {
   const router = useRouter();
-  const { spotifyUnlocked } = useSpotify();
+  const { spotifyUnlocked, iframeRef } = useSpotify();
   const [level, setLevel] = useState<"basico" | "avanzado">("basico");
   const [showSpotifyHint, setShowSpotifyHint] = useState(false);
 
@@ -88,8 +88,7 @@ export default function HomePage() {
             <p className="text-cosmic-pink text-[11px] font-semibold mt-1">— Luna 🌙</p>
           </motion.div>
 
-          {/* Spotify — the iframe is rendered by SpotifyProvider as a fixed overlay on home.
-              We just reserve the space here + show text around it. */}
+          {/* Spotify player — inline, flows with content */}
           <motion.div
             variants={itemVariants}
             className="max-w-md mx-auto mb-5"
@@ -97,8 +96,16 @@ export default function HomePage() {
             <p className="text-white/40 text-xs text-center mb-2">
               Escucha CL34N. Dale al play para poder jugar
             </p>
-            {/* Space for the fixed-positioned iframe from SpotifyProvider */}
-            <div style={{ height: 152 }} />
+            <iframe
+              ref={iframeRef}
+              style={{ borderRadius: 12, width: "100%", maxWidth: 400, margin: "0 auto", display: "block" }}
+              src="https://open.spotify.com/embed/album/4mGvnfMaCkGXo1LHWjiOmD?utm_source=generator&theme=0"
+              height={152}
+              frameBorder={0}
+              allowFullScreen
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            />
             {spotifyUnlocked && (
               <p className="text-center mt-2" style={{ color: "#68A542", fontSize: 12, fontWeight: 600 }}>
                 ✓ Spotify conectado — ¡Adelante!

@@ -93,15 +93,28 @@ export async function GET() {
     // Users by traffic source
     const usuariosPorOrigen = groupByField(usuariosData, 'referrer_source', 'Direct')
 
-    // Recent registrations (last 50)
+    // Calculate minutes played per user
+    const minutosPorUsuario: Record<string, number> = {}
+    sesionesData.forEach((s: any) => {
+      if (s.makina_id && s.inicio && s.fin) {
+        const start = new Date(s.inicio).getTime()
+        const end = new Date(s.fin).getTime()
+        const minutes = Math.max(0, Math.round((end - start) / 60000))
+        minutosPorUsuario[s.makina_id] = (minutosPorUsuario[s.makina_id] || 0) + minutes
+      }
+    })
+
+    // Recent registrations (last 50) with minutes played
     const registrosRecientes = usuariosData.slice(0, 50).map((u: any) => ({
       id: u.id,
       nombre: u.nombre || 'N/A',
       email: u.email || 'N/A',
+      telefono: u.telefono || null,
       ciudad: u.ciudad || null,
       pais: u.pais || null,
       fecha_registro: u.created_at,
       puntos_acumulados: u.puntos_acumulados || 0,
+      minutos_jugados: minutosPorUsuario[u.id] || 0,
     }))
 
     return NextResponse.json({

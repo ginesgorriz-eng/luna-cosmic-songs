@@ -388,20 +388,11 @@ export default function TableroJuego({
             </p>
           </div>
 
-          {/* Right: Zona cliente */}
-          <div className="text-right shrink-0 ml-4" style={{ background: 'rgba(20,10,40,.6)', borderRadius: 10, padding: '8px 12px', border: '1px solid rgba(255,255,255,.1)' }}>
-            <p className="text-base font-bold text-cosmic-pink">preMákina</p>
-            <Link href="/registro" className="inline-block mt-1 px-3 py-1 rounded-md text-[11px] font-semibold transition-all" style={{ background: '#68A542', color: '#fff' }}>
-              Regístrate
-            </Link>
-            <p className="text-[9px] text-white/35 mt-0.5">para guardar el juego y los puntos</p>
-            <div className="flex items-center justify-end gap-2 mt-1">
-              <span className="text-base font-black text-cosmic-purple">{score}</span>
-              <span className="text-[10px] text-white/50">pts</span>
-            </div>
-            <p className="text-[11px] text-white/40 mt-0.5">
-              Fase {currentPhaseIndex + 1}/{phases.length} · {level === 'basico' ? 'Fácil' : 'Supermákina'}
-            </p>
+          {/* Score inline — minimal */}
+          <div className="shrink-0 ml-4 text-right">
+            <span className="text-sm font-black text-cosmic-purple">{score}</span>
+            <span className="text-[10px] text-white/50 ml-1">pts</span>
+            <p className="text-[10px] text-white/40">Fase {currentPhaseIndex + 1}/{phases.length}</p>
           </div>
         </motion.div>
 
@@ -470,11 +461,10 @@ export default function TableroJuego({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 rounded-xl p-4 transition-all"
+            className="mb-8 p-4 transition-all"
             style={{
-              background: "rgba(20,10,40,0.15)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              backdropFilter: "blur(6px)",
+              background: "transparent",
+              border: "none",
             }}
           >
             <h3 className="text-sm font-bold text-white/70 mb-3">
@@ -491,8 +481,8 @@ export default function TableroJuego({
                       <motion.div
                         key={linea.id}
                         initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1, transition: { duration: 0.3 } }}
+                        exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
                       >
                         <FichaFlotante
                           id={linea.id}

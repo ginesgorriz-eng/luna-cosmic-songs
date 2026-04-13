@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import Starfield from '@/components/Starfield';
-import { resetPassword } from '@/lib/supabase';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -76,17 +75,22 @@ export default function LoginPage() {
     setResetLoading(true);
 
     try {
-      await resetPassword(resetEmail);
-      setResetMessage(
-        'Se ha enviado un enlace de restablecimiento de contraseña a tu correo.'
-      );
-      setResetEmail('');
+      const res = await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: resetEmail }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setResetError(data.error || 'Error al solicitar restablecimiento.');
+      } else {
+        setResetMessage(
+          'Se ha enviado un enlace de restablecimiento de contraseña a tu correo.'
+        );
+        setResetEmail('');
+      }
     } catch (error) {
-      setResetError(
-        error instanceof Error
-          ? error.message
-          : 'Error al solicitar restablecimiento. Intenta de nuevo.'
-      );
+      setResetError('Error de conexión. Intenta de nuevo.');
     } finally {
       setResetLoading(false);
     }

@@ -33,10 +33,12 @@ interface DashboardStats {
     id: string
     nombre: string
     email: string
+    telefono: string | null
     ciudad: string
     pais: string
     fecha_registro: string
     puntos_acumulados: number
+    minutos_jugados: number
   }>
 }
 
@@ -199,15 +201,25 @@ export default function AdminPage() {
           </h1>
           <p className="text-white/60 mt-2">Panel de Administración</p>
         </div>
-        <button
-          onClick={() => {
-            setIsAuthenticated(false)
-            setPassword('')
-          }}
-          className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 transition font-medium"
-        >
-          Cerrar sesión
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => {
+              window.open('/api/admin/export', '_blank')
+            }}
+            className="px-5 py-2 rounded-lg bg-[#68A542] hover:bg-[#7ab350] text-white border border-[#68A542]/50 transition font-medium text-sm"
+          >
+            Exportar CSV
+          </button>
+          <button
+            onClick={() => {
+              setIsAuthenticated(false)
+              setPassword('')
+            }}
+            className="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 transition font-medium text-sm"
+          >
+            Cerrar sesión
+          </button>
+        </div>
       </motion.div>
 
       {/* KPI Cards */}
@@ -428,12 +440,14 @@ export default function AdminPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/20">
-                  <th className="px-4 py-3 text-left text-white/80 font-semibold">Nombre</th>
-                  <th className="px-4 py-3 text-left text-white/80 font-semibold">Email</th>
-                  <th className="px-4 py-3 text-left text-white/80 font-semibold">Ciudad</th>
-                  <th className="px-4 py-3 text-left text-white/80 font-semibold">País</th>
-                  <th className="px-4 py-3 text-left text-white/80 font-semibold">Fecha Registro</th>
-                  <th className="px-4 py-3 text-right text-white/80 font-semibold">Puntos</th>
+                  <th className="px-3 py-3 text-left text-white/80 font-semibold text-xs">Nombre</th>
+                  <th className="px-3 py-3 text-left text-white/80 font-semibold text-xs">Email</th>
+                  <th className="px-3 py-3 text-left text-white/80 font-semibold text-xs">Teléfono</th>
+                  <th className="px-3 py-3 text-left text-white/80 font-semibold text-xs">Ciudad</th>
+                  <th className="px-3 py-3 text-left text-white/80 font-semibold text-xs">País</th>
+                  <th className="px-3 py-3 text-left text-white/80 font-semibold text-xs">Registro</th>
+                  <th className="px-3 py-3 text-right text-white/80 font-semibold text-xs">Puntos</th>
+                  <th className="px-3 py-3 text-right text-white/80 font-semibold text-xs">Min. Jugados</th>
                 </tr>
               </thead>
               <tbody>
@@ -445,15 +459,19 @@ export default function AdminPage() {
                     transition={{ delay: idx * 0.05 }}
                     className="border-b border-white/10 hover:bg-white/5 transition"
                   >
-                    <td className="px-4 py-3 text-white">{registro.nombre}</td>
-                    <td className="px-4 py-3 text-white/70 truncate">{registro.email}</td>
-                    <td className="px-4 py-3 text-white/70">{registro.ciudad || '-'}</td>
-                    <td className="px-4 py-3 text-white/70">{registro.pais || '-'}</td>
-                    <td className="px-4 py-3 text-white/70">
+                    <td className="px-3 py-2.5 text-white text-xs">{registro.nombre}</td>
+                    <td className="px-3 py-2.5 text-white/70 text-xs truncate max-w-[180px]">{registro.email}</td>
+                    <td className="px-3 py-2.5 text-white/70 text-xs">{registro.telefono || '-'}</td>
+                    <td className="px-3 py-2.5 text-white/70 text-xs">{registro.ciudad || '-'}</td>
+                    <td className="px-3 py-2.5 text-white/70 text-xs">{registro.pais || '-'}</td>
+                    <td className="px-3 py-2.5 text-white/70 text-xs">
                       {new Date(registro.fecha_registro).toLocaleDateString('es-ES')}
                     </td>
-                    <td className="px-4 py-3 text-right text-[#F5D547] font-semibold">
+                    <td className="px-3 py-2.5 text-right text-[#F5D547] font-semibold text-xs">
                       {registro.puntos_acumulados}
+                    </td>
+                    <td className="px-3 py-2.5 text-right text-[#8FCBE4] font-semibold text-xs">
+                      {registro.minutos_jugados}
                     </td>
                   </motion.tr>
                 ))}
