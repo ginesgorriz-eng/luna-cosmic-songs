@@ -173,11 +173,21 @@ export default function RegistroPage() {
       setTimeout(() => {
         router.push('/juego?level=basico');
       }, 1500);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration error:', error);
-      setErrors({
-        submit: 'Error durante el registro. Por favor intenta de nuevo.'
-      });
+      let msg = 'Error durante el registro. Por favor intenta de nuevo.';
+      if (error?.message) {
+        if (error.message.includes('duplicate') || error.message.includes('already')) {
+          msg = 'Este email ya está registrado. ¿Quieres iniciar sesión?';
+        } else if (error.message.includes('password')) {
+          msg = 'La contraseña no cumple los requisitos de seguridad.';
+        } else if (error.message.includes('Missing Supabase')) {
+          msg = 'Error de configuración del servidor. Contacta al administrador.';
+        } else {
+          msg = error.message;
+        }
+      }
+      setErrors({ submit: msg });
       setLoading(false);
     }
   };
@@ -288,11 +298,11 @@ export default function RegistroPage() {
                   border: '1px solid rgba(255, 255, 255, 0.15)'
                 }}
               >
-                <option value="">Selecciona un pronombre</option>
-                <option value="ella">ella/ellas</option>
-                <option value="el">él/ellos</option>
-                <option value="elle">elle/elles</option>
-                <option value="otro">otro</option>
+                <option value="" style={{ background: '#1a1a2e', color: '#ccc' }}>Selecciona un pronombre</option>
+                <option value="ella" style={{ background: '#1a1a2e', color: '#fff' }}>ella/ellas</option>
+                <option value="el" style={{ background: '#1a1a2e', color: '#fff' }}>él/ellos</option>
+                <option value="elle" style={{ background: '#1a1a2e', color: '#fff' }}>elle/elles</option>
+                <option value="otro" style={{ background: '#1a1a2e', color: '#fff' }}>otro</option>
               </select>
               {errors.pronombre && (
                 <p className="text-red-400 text-xs mt-1">{errors.pronombre}</p>
@@ -437,7 +447,7 @@ export default function RegistroPage() {
                 }}
               >
                 {countries.map(country => (
-                  <option key={country} value={country}>
+                  <option key={country} value={country} style={{ background: '#1a1a2e', color: '#fff' }}>
                     {country}
                   </option>
                 ))}
