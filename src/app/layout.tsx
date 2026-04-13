@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SpotifyProvider } from "@/contexts/SpotifyContext";
+import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
 
 export const metadata: Metadata = {
   title: "Luna Ki Kosmik Songs — Portal de Makinas",
@@ -18,6 +20,8 @@ export default function RootLayout({
       <body className="font-futura antialiased bg-cosmic-bg text-white">
         <SpotifyProvider>
           {children}
+          <Footer />
+          <CookieBanner />
         </SpotifyProvider>
       </body>
     </html>

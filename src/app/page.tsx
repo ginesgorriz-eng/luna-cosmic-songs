@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Starfield from "@/components/Starfield";
@@ -9,7 +9,7 @@ import { useSpotify } from "@/contexts/SpotifyContext";
 
 export default function HomePage() {
   const router = useRouter();
-  const { spotifyUnlocked, iframeRef } = useSpotify();
+  const { spotifyUnlocked } = useSpotify();
   const [level, setLevel] = useState<"basico" | "avanzado">("basico");
   const [showSpotifyHint, setShowSpotifyHint] = useState(false);
 
@@ -88,7 +88,7 @@ export default function HomePage() {
             <p className="text-cosmic-pink text-[11px] font-semibold mt-1">— Luna 🌙</p>
           </motion.div>
 
-          {/* Spotify player — inline, flows with content */}
+          {/* Spotify player — portal target: SpotifyProvider renders the iframe here */}
           <motion.div
             variants={itemVariants}
             className="max-w-md mx-auto mb-5"
@@ -96,16 +96,7 @@ export default function HomePage() {
             <p className="text-white/40 text-xs text-center mb-2">
               Escucha CL34N. Dale al play para poder jugar
             </p>
-            <iframe
-              ref={iframeRef as React.RefObject<HTMLIFrameElement>}
-              style={{ borderRadius: 12, width: "100%", maxWidth: 400, margin: "0 auto", display: "block" }}
-              src="https://open.spotify.com/embed/album/4mGvnfMaCkGXo1LHWjiOmD?utm_source=generator&theme=0"
-              height={152}
-              frameBorder={0}
-              allowFullScreen
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-            />
+            <div id="spotify-portal-target" style={{ minHeight: 152 }} />
             {spotifyUnlocked && (
               <p className="text-center mt-2" style={{ color: "#68A542", fontSize: 12, fontWeight: 600 }}>
                 ✓ Spotify conectado — ¡Adelante!
@@ -223,13 +214,8 @@ export default function HomePage() {
             </div>
           </motion.div>
 
-          {/* Footer */}
-          <motion.p
-            variants={itemVariants}
-            className="text-center text-white/40 text-xs mt-8"
-          >
-            Luna Ki Kosmik Songs — Portal de Makinas
-          </motion.p>
+          {/* Spacer before global footer */}
+          <div className="mt-8" />
         </motion.div>
       </div>
     </>

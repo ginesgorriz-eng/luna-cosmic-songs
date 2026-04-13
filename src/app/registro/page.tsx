@@ -228,7 +228,7 @@ export default function RegistroPage() {
             }}
           >
             <p className="text-white text-center text-sm leading-relaxed">
-              Ola Mákina, a partir de ahora serás miembro oficial del Makina's Club de Luna.
+              Hola Mákina, a partir de ahora serás miembro oficial del Makina's Club de Luna.
               Recibirás información exclusiva, invitaciones a eventos privados, avisos de
               conciertos y eventos en tu zona, lanzamientos y mucho más.
             </p>
