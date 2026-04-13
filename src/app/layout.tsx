@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 
 export const metadata: Metadata = {
-  title: "Luna Ki Kosmik Songs — Portal de Makinas",
+  title: "Luna Ki misión lyrics — Portal de Makinas",
   description:
     "Las canciones de Luna se han perdido en el espacio. ¿Nos ayudas a recomponerlas, Makina?",
 };

@@ -68,7 +68,7 @@ export default function HomePage() {
                   backgroundClip: "text",
                 }}
               >
-                Luna Ki Kosmik Songs
+                Luna Ki misión lyrics
               </span>
             </h1>
             <div

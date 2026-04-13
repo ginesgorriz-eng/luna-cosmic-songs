@@ -379,9 +379,9 @@ export default function TableroJuego({
         >
           {/* Left: Title */}
           <div>
-            <h1 className="text-xl md:text-2xl font-black leading-tight">
-              <span className="italic" style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Sopa de letras</span>{' '}
-              <span style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>by Luna Ki</span>{' '}
+            <h1 className="text-[11px] md:text-2xl font-black leading-tight">
+              <span className="italic" style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Luna Ki</span>{' '}
+              <span style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>misión lyrics</span>{' '}
               <span className="text-white">🌙</span>
             </h1>
             <p className="text-xs text-white/50 mt-0.5">
@@ -392,8 +392,16 @@ export default function TableroJuego({
           {/* Score + registro box */}
           <div className="shrink-0 ml-4 backdrop-blur-sm rounded-xl px-3 py-2 text-right" style={{ background: "rgba(95,203,190,0.15)", border: "1px solid rgba(95,203,190,0.4)" }}>
             <p className="text-[11px] font-bold text-[#EAB3CB]">preMákina</p>
-            <Link href="/registro" className="block text-[9px] text-[#EAB3CB]/70 hover:text-[#EAB3CB] mt-0.5 transition-colors underline">
-              Regístrate para guardar el juego y los puntos
+            <Link
+              href="/registro"
+              className="inline-block mt-1 px-2 py-1 rounded-md text-[8px] font-semibold transition-all"
+              style={{
+                background: "rgba(234,179,203,0.2)",
+                color: "#EAB3CB",
+                border: "1px solid rgba(234,179,203,0.5)",
+              }}
+            >
+              Regístrate para guardar puntos
             </Link>
             <p className="mt-1.5">
               <span className="text-sm font-black text-cosmic-purple">{score}</span>

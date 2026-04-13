@@ -128,7 +128,7 @@ export default function AdminPage() {
         >
           <div className="backdrop-blur-md bg-gradient-to-br from-white/10 to-white/5 border border-white/20 rounded-2xl p-8 shadow-2xl">
             <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-[#68A542] via-[#EAB3CB] to-[#F5D547] bg-clip-text text-transparent">
-              Luna Ki Kosmik Songs
+              Luna Ki misión lyrics
             </h1>
             <p className="text-center text-white/60 mb-8">Panel de Administración</p>
 
@@ -197,7 +197,7 @@ export default function AdminPage() {
       >
         <div>
           <h1 className="text-4xl font-bold bg-gradient-to-r from-[#68A542] via-[#EAB3CB] to-[#F5D547] bg-clip-text text-transparent">
-            Luna Ki Kosmik Songs
+            Luna Ki misión lyrics
           </h1>
           <p className="text-white/60 mt-2">Panel de Administración</p>
         </div>

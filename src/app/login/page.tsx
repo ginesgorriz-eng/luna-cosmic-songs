@@ -120,7 +120,7 @@ export default function LoginPage() {
                 backgroundClip: "text",
               }}
             >
-              Luna Ki Kosmik Songs
+              Luna Ki misión lyrics
             </h1>
           </motion.div>
 
