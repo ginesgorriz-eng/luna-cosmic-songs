@@ -57,8 +57,18 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setLoginError(data.error || 'Error al iniciar sesión.');
+        // Translate common Supabase errors to Spanish
+        const rawError = data.error || 'Error al iniciar sesión.';
+        const errorMap: Record<string, string> = {
+          'Invalid login credentials': 'Email o contraseña incorrectos.',
+          'Email not confirmed': 'Email no confirmado. Contacta con soporte.',
+        };
+        setLoginError(errorMap[rawError] || rawError);
       } else {
+        // Save user info for game UI
+        const userName = data.user?.user_metadata?.nombre || data.user?.email || 'Mákina';
+        sessionStorage.setItem('makina_name', userName);
+        sessionStorage.setItem('makina_logged', '1');
         router.push('/juego?level=basico');
       }
     } catch (error) {
@@ -174,12 +184,12 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#EAB3CB]/50 focus:bg-white/8 transition-all duration-200"
+                    className="w-full pl-3 pr-9 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#EAB3CB]/50 focus:bg-white/8 transition-all duration-200"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white/70 transition-colors"
+                    className="absolute right-2.5 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors p-1"
                     aria-label={
                       showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'
                     }

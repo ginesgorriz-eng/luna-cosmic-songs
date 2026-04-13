@@ -79,6 +79,18 @@ export default function TableroJuego({
   const { particles, createParticles } = useParticles();
   const { toasts, showToast } = useToast();
 
+  // Check if user is registered (set by login/registro pages)
+  const [makinaName, setMakinaName] = useState<string | null>(null);
+  const [isRegistered, setIsRegistered] = useState(false);
+  useEffect(() => {
+    const logged = sessionStorage.getItem('makina_logged');
+    const name = sessionStorage.getItem('makina_name');
+    if (logged === '1' && name) {
+      setIsRegistered(true);
+      setMakinaName(name);
+    }
+  }, []);
+
   // Sensors for dnd-kit
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -389,20 +401,28 @@ export default function TableroJuego({
             </p>
           </div>
 
-          {/* Score + registro box */}
+          {/* Score + user box */}
           <div className="shrink-0 ml-4 backdrop-blur-sm rounded-xl px-3 py-2 text-right" style={{ background: "rgba(95,203,190,0.15)", border: "1px solid rgba(95,203,190,0.4)" }}>
-            <p className="text-[11px] font-bold text-[#EAB3CB]">preMákina</p>
-            <Link
-              href="/registro"
-              className="inline-block mt-1 px-2 py-1 rounded-md text-[8px] font-semibold transition-all"
-              style={{
-                background: "rgba(234,179,203,0.2)",
-                color: "#EAB3CB",
-                border: "1px solid rgba(234,179,203,0.5)",
-              }}
-            >
-              Regístrate para guardar puntos
-            </Link>
+            {isRegistered ? (
+              <>
+                <p className="text-[11px] font-bold text-[#68A542]">Mákina registrada</p>
+                <p className="text-[9px] text-white/60 mt-0.5">{makinaName}</p>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/registro"
+                  className="inline-block px-2.5 py-1 rounded-md transition-all"
+                  style={{
+                    background: "rgba(234,179,203,0.2)",
+                    border: "1px solid rgba(234,179,203,0.5)",
+                  }}
+                >
+                  <span className="block text-[10px] font-bold text-[#EAB3CB]">Regístrate</span>
+                  <span className="block text-[7px] text-[#EAB3CB]/60 leading-tight mt-0.5">guarda puntos y transfórmate<br/>en SuperMákina</span>
+                </Link>
+              </>
+            )}
             <p className="mt-1.5">
               <span className="text-sm font-black text-cosmic-purple">{score}</span>
               <span className="text-[10px] text-white/50 ml-1">pts</span>

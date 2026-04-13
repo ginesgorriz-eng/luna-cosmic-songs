@@ -20,7 +20,12 @@ export async function POST(req: NextRequest) {
     }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
+
+    // Use the actual site URL, not localhost
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://luna-cosmic-songs.vercel.app';
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${siteUrl}/login`,
+    });
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });

@@ -177,7 +177,9 @@ export default function RegistroPage() {
         return;
       }
 
-      // Success
+      // Success — save user info for game UI
+      sessionStorage.setItem('makina_name', formData.nombre);
+      sessionStorage.setItem('makina_logged', '1');
       setSuccessMessage('¡Bienvenida al Makina\'s Club! Redirigiendo...');
       setTimeout(() => {
         router.push('/juego?level=basico');
@@ -193,17 +195,17 @@ export default function RegistroPage() {
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#0a0a1a' }}>
       <Starfield />
 
-      <div className="relative z-10 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md mx-auto">
+      <div className="relative z-10 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-sm mx-auto">
           {/* Logo/Title */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-8"
+            className="text-center mb-4"
           >
             <h1
-              className="text-4xl sm:text-5xl font-bold mb-2"
+              className="text-2xl sm:text-3xl font-bold mb-2"
               style={{
                 backgroundImage: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)',
                 backgroundClip: 'text',
@@ -211,7 +213,7 @@ export default function RegistroPage() {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Luna Ki Kosmik Songs
+              Luna Ki misión lyrics
             </h1>
           </motion.div>
 
@@ -220,14 +222,14 @@ export default function RegistroPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-8 p-4 rounded-lg"
+            className="mb-4 p-3 rounded-lg"
             style={{
               background: 'rgba(255, 255, 255, 0.06)',
               backdropFilter: 'blur(12px)',
               border: '1px solid rgba(255, 255, 255, 0.1)'
             }}
           >
-            <p className="text-white text-center text-sm leading-relaxed">
+            <p className="text-white/80 text-center text-xs leading-relaxed">
               Hola Mákina, a partir de ahora serás miembro oficial del Makina's Club de Luna.
               Recibirás información exclusiva, invitaciones a eventos privados, avisos de
               conciertos y eventos en tu zona, lanzamientos y mucho más.
@@ -240,7 +242,7 @@ export default function RegistroPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-4 p-6 rounded-lg"
+            className="space-y-3 p-4 rounded-lg"
             style={{
               background: 'rgba(255, 255, 255, 0.06)',
               backdropFilter: 'blur(12px)',
@@ -256,7 +258,7 @@ export default function RegistroPage() {
 
             {/* Nombre */}
             <div>
-              <label htmlFor="nombre" className="block text-white text-sm font-medium mb-2">
+              <label htmlFor="nombre" className="block text-white/70 text-xs font-medium mb-1">
                 Nombre *
               </label>
               <input
@@ -267,7 +269,7 @@ export default function RegistroPage() {
                 onChange={handleChange}
                 disabled={loading}
                 placeholder="Tu nombre completo"
-                className="w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-1.5 rounded-lg text-sm text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)'
@@ -280,7 +282,7 @@ export default function RegistroPage() {
 
             {/* Pronombre */}
             <div>
-              <label htmlFor="pronombre" className="block text-white text-sm font-medium mb-2">
+              <label htmlFor="pronombre" className="block text-white/70 text-xs font-medium mb-1">
                 Pronombre preferido *
               </label>
               <select
@@ -289,7 +291,7 @@ export default function RegistroPage() {
                 value={formData.pronombre}
                 onChange={handleChange}
                 disabled={loading}
-                className="w-full px-4 py-2 rounded-lg text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-1.5 rounded-lg text-sm text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)'
@@ -308,7 +310,7 @@ export default function RegistroPage() {
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+              <label htmlFor="email" className="block text-white/70 text-xs font-medium mb-1">
                 Email *
               </label>
               <input
@@ -319,7 +321,7 @@ export default function RegistroPage() {
                 onChange={handleChange}
                 disabled={loading}
                 placeholder="tu@email.com"
-                className="w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-1.5 rounded-lg text-sm text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)'
@@ -332,7 +334,7 @@ export default function RegistroPage() {
 
             {/* Contraseña */}
             <div>
-              <label htmlFor="password" className="block text-white text-sm font-medium mb-2">
+              <label htmlFor="password" className="block text-white/70 text-xs font-medium mb-1">
                 Contraseña *
               </label>
               <input
@@ -343,7 +345,7 @@ export default function RegistroPage() {
                 onChange={handleChange}
                 disabled={loading}
                 placeholder="Mínimo 6 caracteres"
-                className="w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-1.5 rounded-lg text-sm text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)'
@@ -356,7 +358,7 @@ export default function RegistroPage() {
 
             {/* Repetir Contraseña */}
             <div>
-              <label htmlFor="passwordConfirm" className="block text-white text-sm font-medium mb-2">
+              <label htmlFor="passwordConfirm" className="block text-white/70 text-xs font-medium mb-1">
                 Repetir contraseña *
               </label>
               <input
@@ -367,7 +369,7 @@ export default function RegistroPage() {
                 onChange={handleChange}
                 disabled={loading}
                 placeholder="Repite tu contraseña"
-                className="w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-1.5 rounded-lg text-sm text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)'
@@ -380,7 +382,7 @@ export default function RegistroPage() {
 
             {/* Teléfono */}
             <div>
-              <label htmlFor="telefono" className="block text-white text-sm font-medium mb-2">
+              <label htmlFor="telefono" className="block text-white/70 text-xs font-medium mb-1">
                 Teléfono *
               </label>
               <input
@@ -391,7 +393,7 @@ export default function RegistroPage() {
                 onChange={handleChange}
                 disabled={loading}
                 placeholder="+34 600 000 000"
-                className="w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-1.5 rounded-lg text-sm text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)'
@@ -404,7 +406,7 @@ export default function RegistroPage() {
 
             {/* Ciudad */}
             <div>
-              <label htmlFor="ciudad" className="block text-white text-sm font-medium mb-2">
+              <label htmlFor="ciudad" className="block text-white/70 text-xs font-medium mb-1">
                 Ciudad *
               </label>
               <input
@@ -415,7 +417,7 @@ export default function RegistroPage() {
                 onChange={handleChange}
                 disabled={loading}
                 placeholder="Tu ciudad"
-                className="w-full px-4 py-2 rounded-lg text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-1.5 rounded-lg text-sm text-white placeholder-gray-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)'
@@ -428,7 +430,7 @@ export default function RegistroPage() {
 
             {/* País */}
             <div>
-              <label htmlFor="pais" className="block text-white text-sm font-medium mb-2">
+              <label htmlFor="pais" className="block text-white/70 text-xs font-medium mb-1">
                 País *
               </label>
               <select
@@ -437,7 +439,7 @@ export default function RegistroPage() {
                 value={formData.pais}
                 onChange={handleChange}
                 disabled={loading}
-                className="w-full px-4 py-2 rounded-lg text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-3 py-1.5 rounded-lg text-sm text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   border: '1px solid rgba(255, 255, 255, 0.15)'
@@ -498,7 +500,7 @@ export default function RegistroPage() {
               disabled={loading}
               whileHover={{ scale: loading ? 1 : 1.02 }}
               whileTap={{ scale: loading ? 1 : 0.98 }}
-              className="w-full py-3 rounded-lg font-semibold text-white transition disabled:opacity-70 disabled:cursor-not-allowed mt-6"
+              className="w-full py-2.5 rounded-lg font-semibold text-sm text-white transition disabled:opacity-70 disabled:cursor-not-allowed mt-4"
               style={{
                 background: loading ? 'rgba(104, 165, 66, 0.6)' : '#68A542',
                 cursor: loading ? 'not-allowed' : 'pointer'
