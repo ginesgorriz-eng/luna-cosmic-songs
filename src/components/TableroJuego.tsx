@@ -362,7 +362,7 @@ export default function TableroJuego({
         className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url('/images/luna-cover.jpeg')",
-          filter: "brightness(0.40) blur(2px)",
+          filter: "brightness(0.50) blur(2px)",
         }}
       />
       {/* Starfield on top of cover */}
@@ -440,7 +440,7 @@ export default function TableroJuego({
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
+          <div className="mb-8 grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 items-start">
             {currentPhaseSongs.map((song, idx) => (
               <SortableContext
                 key={song.id}
@@ -467,9 +467,9 @@ export default function TableroJuego({
             animate={{ opacity: 1, y: 0 }}
             className="mb-8 rounded-xl p-4 transition-all"
             style={{
-              background: "rgba(20,10,40,0.4)",
-              border: "1px solid rgba(139,92,246,0.2)",
-              backdropFilter: "blur(10px)",
+              background: "rgba(20,10,40,0.25)",
+              border: "1px solid rgba(139,92,246,0.15)",
+              backdropFilter: "blur(8px)",
             }}
           >
             <h3 className="text-sm font-bold text-white/70 mb-3">

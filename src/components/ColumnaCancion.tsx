@@ -49,9 +49,9 @@ export default function ColumnaCancion({
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col h-full rounded-xl p-3 transition-all"
       style={{
-        background: "rgba(20,10,40,0.6)",
-        border: "1px solid rgba(139,92,246,0.3)",
-        backdropFilter: "blur(10px)",
+        background: "rgba(20,10,40,0.35)",
+        border: "1px solid rgba(139,92,246,0.25)",
+        backdropFilter: "blur(8px)",
       }}
     >
       {/* Song name header */}
@@ -94,7 +94,7 @@ export default function ColumnaCancion({
           </SortableContext>
         ) : (
           <div className="flex items-center justify-center h-full text-white/40 text-xs text-center">
-            <span>Arrastra texto</span>
+            <span>Agrega líneas de letra a la canción</span>
           </div>
         )}
       </div>
