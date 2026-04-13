@@ -126,22 +126,32 @@ export default function ColumnaCancion({
       </div>
 
       {/* Validation button — colored per column */}
-      <motion.button
-        onClick={onValidar}
-        disabled={isValidated || lineas.length === 0}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}
-        className="w-full py-1.5 rounded-md text-xs font-bold transition-all"
-        style={
-          isValidated
-            ? { background: "#68A54240", color: "#68A542", border: "1px solid #68A54260", cursor: "not-allowed" }
-            : lineas.length === 0
-            ? { background: "#CF464B20", color: "#CF464B", border: "1px solid #CF464B40", cursor: "not-allowed" }
-            : { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}50`, color: "#fff", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}90` }
-        }
-      >
-        {isValidated ? "¡Lo tengo! ✓" : lineas.length === 0 ? "¡Kompone primero Mákina!" : BUTTON_TEXTS[columnIndex % BUTTON_TEXTS.length]}
-      </motion.button>
+      <div className="relative group">
+        <motion.button
+          onClick={onValidar}
+          disabled={isValidated}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          className="w-full py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer"
+          style={
+            isValidated
+              ? { background: "#68A54240", color: "#68A542", border: "1px solid #68A54260" }
+              : lineas.length === 0
+              ? { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}25`, color: "rgba(255,255,255,0.5)", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}40` }
+              : { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}50`, color: "#fff", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}90` }
+          }
+        >
+          {isValidated ? "¡Lo tengo! ✓" : BUTTON_TEXTS[columnIndex % BUTTON_TEXTS.length]}
+        </motion.button>
+        {/* Tooltip on hover when no lines */}
+        {lineas.length === 0 && !isValidated && (
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 rounded text-xs font-semibold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+            style={{ background: "#CF464B", color: "#fff" }}
+          >
+            ¡Kompone primero Mákina!
+          </div>
+        )}
+      </div>
 
       {/* Feedback message next to button */}
       <AnimatePresence>
