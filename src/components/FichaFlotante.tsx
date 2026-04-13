@@ -102,9 +102,7 @@ export default function FichaFlotante({
       {...attributes}
       {...listeners}
     >
-      <p className="text-xs font-medium text-white/90 leading-snug line-clamp-2 break-words">
-        {texto}
-      </p>
+      <p className="text-xs font-medium text-white/90 leading-tight">{texto}</p>
     </motion.div>
   );
 }

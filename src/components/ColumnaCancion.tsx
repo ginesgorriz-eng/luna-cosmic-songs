@@ -172,10 +172,10 @@ export default function ColumnaCancion({
         className="mt-2 py-1.5 px-2 rounded-md text-center"
         style={{
           background: `${BOX_COLORS[columnIndex % BOX_COLORS.length]}20`,
-          border: `1px solid ${BOX_COLORS[columnIndex % BOX_COLORS.length]}35`,
+          border: `1px solid ${BOX_COLORS[columnIndex % BOX_COLORS.length]}40`,
         }}
       >
-        <p className="text-xs font-semibold text-white/60 truncate">{songName}</p>
+        <p className="text-[10px] font-medium text-white/60 truncate">{songName}</p>
       </div>
     </motion.div>
   );

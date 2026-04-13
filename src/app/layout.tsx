@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SpotifyProvider } from "@/contexts/SpotifyContext";
 
 export const metadata: Metadata = {
-  title: "Luna Cosmic Songs — Portal de Makinas",
+  title: "Luna Kosmic Songs — Portal de Makinas",
   description:
     "Las canciones de Luna se han perdido en el espacio. ¿Nos ayudas a recomponerlas, Makina?",
 };
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="font-futura antialiased bg-cosmic-bg text-white">
-        {children}
+        <SpotifyProvider>
+          {children}
+        </SpotifyProvider>
       </body>
     </html>
   );
