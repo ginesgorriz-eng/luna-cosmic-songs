@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Starfield from '@/components/Starfield';
-import { registerMakina } from '@/lib/supabase';
 
 interface FormData {
   nombre: string;
@@ -155,18 +154,28 @@ export default function RegistroPage() {
 
     setLoading(true);
     try {
-      const result = await registerMakina(
-        formData.email,
-        formData.password,
-        {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
           nombre: formData.nombre,
           pronombre: formData.pronombre,
           telefono: formData.telefono,
           ciudad: formData.ciudad,
           pais: formData.pais,
           referrer_source: referrerSource,
-        }
-      );
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrors({ submit: data.error || 'Error durante el registro.' });
+        setLoading(false);
+        return;
+      }
 
       // Success
       setSuccessMessage('¡Bienvenida al Makina\'s Club! Redirigiendo...');
@@ -175,19 +184,7 @@ export default function RegistroPage() {
       }, 1500);
     } catch (error: any) {
       console.error('Registration error:', error);
-      let msg = 'Error durante el registro. Por favor intenta de nuevo.';
-      if (error?.message) {
-        if (error.message.includes('duplicate') || error.message.includes('already')) {
-          msg = 'Este email ya está registrado. ¿Quieres iniciar sesión?';
-        } else if (error.message.includes('password')) {
-          msg = 'La contraseña no cumple los requisitos de seguridad.';
-        } else if (error.message.includes('Missing Supabase')) {
-          msg = 'Error de configuración del servidor. Contacta al administrador.';
-        } else {
-          msg = error.message;
-        }
-      }
-      setErrors({ submit: msg });
+      setErrors({ submit: 'Error de conexión. Por favor intenta de nuevo.' });
       setLoading(false);
     }
   };

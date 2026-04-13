@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Starfield from "@/components/Starfield";
@@ -9,7 +9,7 @@ import { useSpotify } from "@/contexts/SpotifyContext";
 
 export default function HomePage() {
   const router = useRouter();
-  const { spotifyUnlocked } = useSpotify();
+  const { spotifyUnlocked, iframeRef } = useSpotify();
   const [level, setLevel] = useState<"basico" | "avanzado">("basico");
   const [showSpotifyHint, setShowSpotifyHint] = useState(false);
 
@@ -57,9 +57,9 @@ export default function HomePage() {
           animate="visible"
           className="max-w-2xl w-full"
         >
-          {/* Title — Luna Kosmic Songs */}
-          <motion.div variants={itemVariants} className="text-center mb-8">
-            <h1 className="text-5xl md:text-6xl font-black mb-2">
+          {/* Title — smaller */}
+          <motion.div variants={itemVariants} className="text-center mb-6">
+            <h1 className="text-3xl md:text-4xl font-black mb-2">
               <span
                 style={{
                   background: "linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)",
@@ -72,33 +72,52 @@ export default function HomePage() {
               </span>
             </h1>
             <div
-              className="h-1 w-24 mx-auto rounded-full"
+              className="h-1 w-20 mx-auto rounded-full"
               style={{ background: "linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)" }}
             />
           </motion.div>
 
-          {/* Luna's Message */}
+          {/* Luna's Message — smaller, italic */}
           <motion.div
             variants={itemVariants}
-            className="glass rounded-2xl p-4 mb-6 max-w-lg mx-auto text-center"
+            className="glass rounded-2xl p-3 mb-5 max-w-md mx-auto text-center"
           >
-            <p className="text-white/60 text-xs leading-relaxed mb-2 italic">
+            <p className="text-white/50 text-[11px] leading-relaxed italic">
               &ldquo;Ostia Makinas, tengo un problema gordo. Mandé mis canciones en la nave Artemis y por un fallo técnico las letras han quedado flotando por el espacio. Necesito vuestra ayuda para recomponerlas. ¿Os animáis?&rdquo;
             </p>
-            <p className="text-cosmic-pink text-xs font-semibold">— Luna 🌙</p>
+            <p className="text-cosmic-pink text-[11px] font-semibold mt-1">— Luna 🌙</p>
           </motion.div>
 
-          {/* Spotify hint — only before it's unlocked */}
-          {!spotifyUnlocked && (
-            <motion.div
-              variants={itemVariants}
-              className="text-center mb-4"
-            >
-              <p className="text-white/40 text-sm">
-                Dale play al reproductor de Spotify para empezar 🌙
+          {/* Spotify — INLINE, right after the message */}
+          <motion.div
+            variants={itemVariants}
+            className="max-w-md mx-auto mb-5"
+          >
+            <p className="text-white/40 text-xs text-center mb-2">
+              Escucha CL34N. Dale al play para poder jugar
+            </p>
+            <iframe
+              ref={iframeRef}
+              style={{
+                borderRadius: 12,
+                width: "100%",
+                maxWidth: 400,
+                margin: "0 auto",
+                display: "block",
+              }}
+              src="https://open.spotify.com/embed/album/4mGvnfMaCkGXo1LHWjiOmD?utm_source=generator&theme=0"
+              height={152}
+              frameBorder={0}
+              allowFullScreen
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            />
+            {spotifyUnlocked && (
+              <p className="text-center mt-2" style={{ color: "#22c55e", fontSize: 12, fontWeight: 600 }}>
+                ✓ Spotify conectado — ¡Adelante!
               </p>
-            </motion.div>
-          )}
+            )}
+          </motion.div>
 
           {/* Level Selector */}
           <LevelSelector level={level} onLevelChange={setLevel} />
@@ -106,10 +125,10 @@ export default function HomePage() {
           {/* Passive message — Comienza el Viaje Cósmico */}
           <motion.div
             variants={itemVariants}
-            className="text-center mt-6 mb-4 max-w-lg mx-auto"
+            className="text-center mt-5 mb-3 max-w-lg mx-auto"
           >
             <p
-              className="text-lg font-bold italic"
+              className="text-base font-bold italic"
               style={{
                 background: "linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)",
                 WebkitBackgroundClip: "text",
@@ -162,7 +181,7 @@ export default function HomePage() {
                 Ya soy Mákina registrada
               </button>
             </div>
-            {/* Jugar sin registrar — #EAB3CB rosa, más pequeño */}
+            {/* Jugar sin registrar */}
             <button
               onClick={() => handlePlay("guest")}
               className="px-3 py-2 rounded-2xl text-xs transition-all cursor-pointer mx-auto"
@@ -182,7 +201,7 @@ export default function HomePage() {
           {/* Footer */}
           <motion.p
             variants={itemVariants}
-            className="text-center text-white/40 text-sm mt-12"
+            className="text-center text-white/40 text-xs mt-8"
           >
             Luna Kosmic Songs — Portal de Makinas
           </motion.p>
