@@ -379,16 +379,8 @@ export default function TableroJuego({
           {/* Left: Title */}
           <div>
             <h1 className="text-xl md:text-2xl font-black leading-tight">
-              <span
-                style={{
-                  background: "linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                Luna Kosmic Songs
-              </span>{' '}
+              <span className="text-cosmic-purple">Luna</span>{' '}
+              <span className="text-cosmic-pink">Cosmic Songs</span>{' '}
               <span className="text-white">🌙</span>
             </h1>
             <p className="text-xs text-white/50 mt-0.5">
@@ -523,16 +515,25 @@ export default function TableroJuego({
             {draggedLineId ? (
               <FichaFlotante
                 id={draggedLineId}
-                texto={shuffledPhaseLines.find(l => l.id === draggedLineId)?.texto || ""}
+                texto={
+                  availableLines.find(l => l.id === draggedLineId)?.texto ||
+                  currentPhaseSongs.flatMap(s => columnStates[s.id] || []).find(
+                    l => l.id === draggedLineId
+                  )?.texto ||
+                  "..."
+                }
                 index={0}
                 isInColumn={false}
               />
             ) : null}
           </DragOverlay>
         </DndContext>
+
+        {/* Bottom spacer */}
+        <div className="h-8" />
       </div>
+
     </div>
     </>
   );
 }
-          
