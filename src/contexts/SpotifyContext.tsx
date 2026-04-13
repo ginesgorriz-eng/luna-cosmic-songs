@@ -77,6 +77,7 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
                 height: 1,
                 overflow: "hidden",
                 pointerEvents: "none",
+                visibility: "hidden" as const,
               }
         }
       >

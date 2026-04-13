@@ -44,6 +44,7 @@ const COLORS = ['#68A542', '#EAB3CB', '#F5D547', '#8b5cf6', '#FF6B6B', '#4ECDC4'
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -74,20 +75,23 @@ export default function AdminPage() {
     setLoading(true)
 
     try {
-      const response = await fetch('/api/admin/verify', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       })
+      const data = await response.json()
 
-      if (response.ok) {
+      if (response.ok && data.success) {
+        // Check if user is admin (first registered user or specific email)
         setIsAuthenticated(true)
         setPassword('')
+        setEmail('')
       } else {
-        setError('Contraseña incorrecta')
+        setError(data.error || 'Credenciales incorrectas')
       }
     } catch (err) {
-      setError('Error al verificar contraseña')
+      setError('Error al verificar credenciales')
       console.error(err)
     } finally {
       setLoading(false)
@@ -126,18 +130,31 @@ export default function AdminPage() {
             </h1>
             <p className="text-center text-white/60 mb-8">Panel de Administración</p>
 
-            <form onSubmit={handleLogin} className="space-y-6">
+            <form onSubmit={handleLogin} className="space-y-4">
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-white/80 mb-2">
-                  Contraseña de Admin
+                <label htmlFor="admin-email" className="block text-xs font-medium text-white/70 mb-1">
+                  Email
                 </label>
                 <input
-                  id="password"
+                  id="admin-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="tu@email.com"
+                  className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#68A542] focus:border-transparent transition"
+                />
+              </div>
+              <div>
+                <label htmlFor="admin-password" className="block text-xs font-medium text-white/70 mb-1">
+                  Contraseña
+                </label>
+                <input
+                  id="admin-password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Ingresa la contraseña"
-                  className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#68A542] focus:border-transparent transition"
+                  placeholder="Tu contraseña de Mákina"
+                  className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#68A542] focus:border-transparent transition"
                 />
               </div>
 
