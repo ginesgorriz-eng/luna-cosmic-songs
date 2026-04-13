@@ -10,7 +10,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Geist", Arial, Helvetica, sans-serif;
+  font-family: "Futura", "Century Gothic", "Apple Gothic", sans-serif;
   overflow-x: hidden;
 }
 

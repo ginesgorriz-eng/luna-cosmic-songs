@@ -18,6 +18,32 @@ const BUTTON_TEXTS = [
   "Soy Makina",
 ];
 
+// Colores para botones de validación (uno por columna)
+const BUTTON_COLORS = [
+  "#F6B258",
+  "#5FCBBE",
+  "#8FCBE4",
+  "#F1B4CF",
+  "#F9C140",
+  "#1FC4A8",
+  "#A1D9D9",
+  "#CF464B",
+  "#8C8A4C",
+  "#D63348",
+  "#68A542",
+  "#EAB3CB",
+  "#FFCB3A",
+  "#F4BFBF",
+];
+
+// Colores de fondo de cada caja de canción (tono ligero)
+const BOX_COLORS = [
+  "#D7E2CA",
+  "#8FCBE4",
+  "#EAB3CB",
+  "#DECE86",
+];
+
 interface ColumnaCancionProps {
   id: string;
   songName: string;
@@ -49,9 +75,9 @@ export default function ColumnaCancion({
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col h-full rounded-xl p-3 transition-all"
       style={{
-        background: "rgba(20,10,40,0.35)",
-        border: "1px solid rgba(139,92,246,0.25)",
-        backdropFilter: "blur(8px)",
+        background: `${BOX_COLORS[columnIndex % BOX_COLORS.length]}18`,
+        border: `1px solid ${BOX_COLORS[columnIndex % BOX_COLORS.length]}30`,
+        backdropFilter: "blur(6px)",
       }}
     >
       {/* Song name header */}
@@ -99,22 +125,20 @@ export default function ColumnaCancion({
         )}
       </div>
 
-      {/* Validation button — subtle style */}
+      {/* Validation button — colored per column */}
       <motion.button
         onClick={onValidar}
         disabled={isValidated || lineas.length === 0}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.97 }}
-        className={`
-          w-full py-1.5 rounded-md text-xs font-semibold transition-all
-          ${
-            isValidated
-              ? "bg-cosmic-success/30 text-cosmic-success border border-cosmic-success/50 cursor-not-allowed"
-              : lineas.length === 0
-              ? "bg-white/5 text-white/20 border border-white/10 cursor-not-allowed"
-              : "bg-cosmic-purple/25 text-white/90 border border-cosmic-purple/50 hover:bg-cosmic-purple/40 hover:text-white hover:border-cosmic-purple/70 shadow-md shadow-cosmic-purple/10"
-          }
-        `}
+        className="w-full py-1.5 rounded-md text-xs font-bold transition-all"
+        style={
+          isValidated
+            ? { background: "#68A54240", color: "#68A542", border: "1px solid #68A54260", cursor: "not-allowed" }
+            : lineas.length === 0
+            ? { background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.1)", cursor: "not-allowed" }
+            : { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}50`, color: "#fff", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}90` }
+        }
       >
         {isValidated ? "¡Lo tengo! ✓" : BUTTON_TEXTS[columnIndex % BUTTON_TEXTS.length]}
       </motion.button>

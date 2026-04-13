@@ -1,6 +1,9 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,6 +11,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        futura: ['"Futura"', '"Century Gothic"', '"Apple Gothic"', 'sans-serif'],
+      },
       colors: {
         cosmic: {
           bg: "#0a0a1a",
@@ -43,6 +49,10 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function({ addVariant }: { addVariant: (name: string, rule: string) => void }) {
+      addVariant('landscape', '@media (orientation: landscape)');
+    },
+  ],
 };
 export default config;

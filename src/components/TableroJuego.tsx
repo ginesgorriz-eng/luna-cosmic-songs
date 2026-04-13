@@ -406,21 +406,23 @@ export default function TableroJuego({
         <div className="flex items-center gap-2 mb-4 flex-wrap">
           <button
             onClick={() => handleLevelChange('basico')}
-            className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+            className="px-3 py-1.5 rounded-md text-xs font-semibold transition-all"
+            style={
               level === 'basico'
-                ? 'bg-cosmic-purple/30 text-white border border-cosmic-purple/60'
-                : 'text-white/50 border border-white/15 hover:border-white/30 hover:text-white/80'
-            }`}
+                ? { background: '#EAB3CB50', color: '#fff', border: '1px solid #EAB3CB90' }
+                : { color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.15)' }
+            }
           >
             Nivel fácil
           </button>
           <button
             onClick={() => handleLevelChange('avanzado')}
-            className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+            className="px-3 py-1.5 rounded-md text-xs font-semibold transition-all"
+            style={
               level === 'avanzado'
-                ? 'bg-cosmic-pink/30 text-white border border-cosmic-pink/60'
-                : 'text-white/50 border border-white/15 hover:border-white/30 hover:text-white/80'
-            }`}
+                ? { background: '#D6334850', color: '#fff', border: '1px solid #D6334890' }
+                : { color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.15)' }
+            }
           >
             Nivel Supermákina
           </button>
@@ -440,7 +442,7 @@ export default function TableroJuego({
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className="mb-8 grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 items-start">
+          <div className="mb-8 grid grid-cols-2 landscape:grid-cols-4 md:grid-cols-4 gap-2 md:gap-4 items-start">
             {currentPhaseSongs.map((song, idx) => (
               <SortableContext
                 key={song.id}
@@ -467,9 +469,9 @@ export default function TableroJuego({
             animate={{ opacity: 1, y: 0 }}
             className="mb-8 rounded-xl p-4 transition-all"
             style={{
-              background: "rgba(20,10,40,0.25)",
-              border: "1px solid rgba(139,92,246,0.15)",
-              backdropFilter: "blur(8px)",
+              background: "rgba(20,10,40,0.15)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              backdropFilter: "blur(6px)",
             }}
           >
             <h3 className="text-sm font-bold text-white/70 mb-3">

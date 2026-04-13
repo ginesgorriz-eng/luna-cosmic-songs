@@ -38,26 +38,14 @@ export default function FichaFlotante({
     transition,
   };
 
-  // Validation color mapping
-  const validationStyles = {
-    correct: {
-      border: 'border-cosmic-success',
-      bg: 'bg-emerald-500/20',
-      shadow: 'shadow-emerald-500/20',
-    },
-    'wrong-position': {
-      border: 'border-amber-400/60',
-      bg: 'bg-amber-500/20',
-      shadow: 'shadow-amber-500/20',
-    },
-    'wrong-song': {
-      border: 'border-cosmic-error',
-      bg: 'bg-red-500/20',
-      shadow: 'shadow-red-500/20',
-    },
+  // Validation color mapping — custom palette
+  const validationInline: Record<ValidationColor, { border: string; bg: string; shadow: string }> = {
+    correct:          { border: '#68A542', bg: 'rgba(104,165,66,0.25)', shadow: 'rgba(104,165,66,0.3)' },
+    'wrong-position': { border: '#FFCB3A', bg: 'rgba(255,203,58,0.25)', shadow: 'rgba(255,203,58,0.3)' },
+    'wrong-song':     { border: '#D63348', bg: 'rgba(214,51,72,0.25)', shadow: 'rgba(214,51,72,0.3)' },
   };
 
-  const validation = validationColor ? validationStyles[validationColor] : null;
+  const vStyle = validationColor ? validationInline[validationColor] : null;
 
   // Float animation only when NOT in a column
   const floatVariants = isInColumn
@@ -78,7 +66,14 @@ export default function FichaFlotante({
   return (
     <motion.div
       ref={setNodeRef}
-      style={style}
+      style={{
+        ...style,
+        ...(vStyle ? {
+          border: `2px solid ${vStyle.border}`,
+          background: vStyle.bg,
+          boxShadow: `0 4px 12px ${vStyle.shadow}`,
+        } : {}),
+      }}
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{
         opacity: 1,
@@ -102,8 +97,7 @@ export default function FichaFlotante({
         relative px-2.5 py-1.5 rounded-md backdrop-blur-sm cursor-grab active:cursor-grabbing
         touch-none select-none transition-all duration-200 text-white
         bg-gradient-to-br from-white/10 to-white/5 hover:from-white/15 hover:to-white/10
-        ${isDragging ? 'scale-125 rotate-6 z-[1000] border-purple-400 shadow-lg shadow-purple-500/50' : 'border border-white/20'}
-        ${validation ? `border-2 ${validation.border} ${validation.bg} shadow-lg ${validation.shadow}` : ''}
+        ${isDragging ? 'scale-125 rotate-6 z-[1000] border-purple-400 shadow-lg shadow-purple-500/50' : vStyle ? '' : 'border border-white/20'}
       `}
       {...attributes}
       {...listeners}
