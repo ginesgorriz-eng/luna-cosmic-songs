@@ -136,11 +136,11 @@ export default function ColumnaCancion({
           isValidated
             ? { background: "#68A54240", color: "#68A542", border: "1px solid #68A54260", cursor: "not-allowed" }
             : lineas.length === 0
-            ? { background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.2)", border: "1px solid rgba(255,255,255,0.1)", cursor: "not-allowed" }
+            ? { background: "#CF464B20", color: "#CF464B", border: "1px solid #CF464B40", cursor: "not-allowed" }
             : { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}50`, color: "#fff", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}90` }
         }
       >
-        {isValidated ? "¡Lo tengo! ✓" : BUTTON_TEXTS[columnIndex % BUTTON_TEXTS.length]}
+        {isValidated ? "¡Lo tengo! ✓" : lineas.length === 0 ? "¡Kompone primero Mákina!" : BUTTON_TEXTS[columnIndex % BUTTON_TEXTS.length]}
       </motion.button>
 
       {/* Feedback message next to button */}
@@ -156,6 +156,17 @@ export default function ColumnaCancion({
           </motion.p>
         )}
       </AnimatePresence>
+
+      {/* Song name footer — visible on scroll */}
+      <div
+        className="mt-2 py-1.5 px-2 rounded-md text-center"
+        style={{
+          background: `${BOX_COLORS[columnIndex % BOX_COLORS.length]}20`,
+          border: `1px solid ${BOX_COLORS[columnIndex % BOX_COLORS.length]}35`,
+        }}
+      >
+        <p className="text-xs font-semibold text-white/60 truncate">{songName}</p>
+      </div>
     </motion.div>
   );
 }

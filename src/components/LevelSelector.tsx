@@ -33,21 +33,23 @@ export default function LevelSelector({ level, onLevelChange, compact = false }:
     >
       <button
         onClick={() => onLevelChange('basico')}
-        className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
+        className="px-5 py-3 rounded-xl font-semibold text-sm transition-all"
+        style={
           level === 'basico'
-            ? 'bg-gradient-to-br from-cosmic-purple to-cosmic-purple/60 text-white shadow-lg shadow-cosmic-purple/30 border border-cosmic-purple/80'
-            : 'bg-white/5 text-white/60 border border-white/20 hover:bg-cosmic-purple/15 hover:border-cosmic-purple/40 hover:text-white/90'
-        }`}
+            ? { background: '#F4BFBF', color: '#1a1a2e', border: '1px solid #F4BFBF', boxShadow: '0 4px 12px rgba(244,191,191,0.3)' }
+            : { background: 'rgba(244,191,191,0.15)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(244,191,191,0.3)' }
+        }
       >
         Nivel fácil (8 líneas)
       </button>
       <button
         onClick={() => onLevelChange('avanzado')}
-        className={`px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
+        className="px-5 py-3 rounded-xl font-semibold text-sm transition-all"
+        style={
           level === 'avanzado'
-            ? 'bg-gradient-to-br from-cosmic-purple to-cosmic-purple/60 text-white shadow-lg shadow-cosmic-purple/30 border border-cosmic-purple/80'
-            : 'bg-white/5 text-white/60 border border-white/20 hover:bg-cosmic-purple/15 hover:border-cosmic-purple/40 hover:text-white/90'
-        }`}
+            ? { background: '#FFCB3A', color: '#1a1a2e', border: '1px solid #FFCB3A', boxShadow: '0 4px 12px rgba(255,203,58,0.3)' }
+            : { background: 'rgba(255,203,58,0.15)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,203,58,0.3)' }
+        }
       >
         Nivel Supermáquina (canción completa)
       </button>

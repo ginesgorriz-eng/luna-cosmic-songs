@@ -81,11 +81,12 @@ export default function HomePage() {
           >
             <button
               onClick={spotifyUnlocked ? handleStartJourney : () => setShowSpotifyHint(true)}
-              className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all ${
+              className="px-8 py-4 rounded-2xl font-bold text-lg transition-all cursor-pointer"
+              style={
                 spotifyUnlocked
-                  ? "bg-gradient-to-br from-cosmic-purple to-cosmic-pink text-white shadow-lg shadow-cosmic-pink/30 hover:shadow-xl hover:shadow-cosmic-pink/50 cursor-pointer"
-                  : "opacity-50 bg-gradient-to-br from-cosmic-purple to-cosmic-pink text-white cursor-pointer"
-              }`}
+                  ? { background: '#68A542', color: '#fff', boxShadow: '0 4px 16px rgba(104,165,66,0.4)', border: '1px solid #68A542' }
+                  : { background: 'rgba(104,165,66,0.4)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(104,165,66,0.3)' }
+              }
             >
               Comienza el Viaje Cósmico
             </button>
@@ -101,23 +102,23 @@ export default function HomePage() {
             <div className="flex gap-2">
               <button
                 onClick={spotifyUnlocked ? handleStartJourney : () => setShowSpotifyHint(true)}
-                className="flex-1 px-4 py-3 rounded-2xl text-sm font-semibold text-white/70 border border-white/20 glass backdrop-blur-sm transition-all hover:text-white/90 hover:border-white/40"
+                className="flex-1 px-3 py-2.5 rounded-2xl text-xs font-semibold text-white/70 border border-white/20 glass backdrop-blur-sm transition-all hover:text-white/90 hover:border-white/40"
               >
                 Registrarme como Mákina
               </button>
               <button
                 onClick={spotifyUnlocked ? handleStartJourney : () => setShowSpotifyHint(true)}
-                className="flex-1 px-4 py-3 rounded-2xl text-sm font-semibold text-white/70 border border-white/20 glass backdrop-blur-sm transition-all hover:text-white/90 hover:border-white/40"
+                className="flex-1 px-3 py-2.5 rounded-2xl text-xs font-semibold text-white/70 border border-white/20 glass backdrop-blur-sm transition-all hover:text-white/90 hover:border-white/40"
               >
                 Ya soy Mákina registrada
               </button>
+              <button
+                onClick={spotifyUnlocked ? handleStartJourney : () => setShowSpotifyHint(true)}
+                className="flex-1 px-3 py-2.5 rounded-2xl text-xs font-semibold text-white/40 border border-white/10 glass backdrop-blur-sm transition-all hover:text-white/60 hover:border-white/20"
+              >
+                Seguir sin registrar
+              </button>
             </div>
-            <button
-              onClick={spotifyUnlocked ? handleStartJourney : () => setShowSpotifyHint(true)}
-              className="px-4 py-2 rounded-2xl text-xs text-white/40 transition-all hover:text-white/60"
-            >
-              Seguir sin registrar
-            </button>
           </motion.div>
 
           {/* Footer */}
