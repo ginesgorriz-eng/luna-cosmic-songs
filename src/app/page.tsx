@@ -97,7 +97,7 @@ export default function HomePage() {
               Escucha CL34N. Dale al play para poder jugar
             </p>
             <iframe
-              ref={iframeRef}
+              ref={iframeRef as React.RefObject<HTMLIFrameElement>}
               style={{ borderRadius: 12, width: "100%", maxWidth: 400, margin: "0 auto", display: "block" }}
               src="https://open.spotify.com/embed/album/4mGvnfMaCkGXo1LHWjiOmD?utm_source=generator&theme=0"
               height={152}
