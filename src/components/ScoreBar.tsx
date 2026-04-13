@@ -20,7 +20,7 @@ export default function ScoreBar({ score, phase, totalPhases, level }: ScoreBarP
       }}
     >
       <div className="flex items-center gap-2">
-        <span className="text-2xl font-black text-cosmic-purple" style={{ textShadow: '0 0 10px rgba(139,92,246,.5)' }}>
+        <span className="text-2xl font-black text-cosmic-purple">
           {score}
         </span>
         <span className="text-sm text-white/80">pts</span>
@@ -29,8 +29,8 @@ export default function ScoreBar({ score, phase, totalPhases, level }: ScoreBarP
         <span>Fase <strong className="text-cosmic-pink">{phase}</strong>/{totalPhases}</span>
         <span className="text-white/40">|</span>
         <span className="text-xs px-2 py-1 rounded-md" style={{
-          background: level === 'basico' ? 'rgba(139,92,246,.3)' : 'rgba(236,72,153,.3)',
-          border: `1px solid ${level === 'basico' ? 'rgba(139,92,246,.5)' : 'rgba(236,72,153,.5)'}`
+          background: level === 'basico' ? 'rgba(234,179,203,.2)' : 'rgba(214,51,72,.2)',
+          border: `1px solid ${level === 'basico' ? 'rgba(234,179,203,.4)' : 'rgba(214,51,72,.4)'}`
         }}>
           {level === 'basico' ? 'Fácil (8 líneas)' : 'Supermáquina ★'}
         </span>

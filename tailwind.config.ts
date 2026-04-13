@@ -18,7 +18,7 @@ const config: Config = {
         cosmic: {
           bg: "#0a0a1a",
           card: "rgba(255,255,255,0.08)",
-          purple: "#8b5cf6",
+          purple: "#F5D547",
           pink: "#ec4899",
           success: "#22c55e",
           error: "#ef4444",
@@ -43,8 +43,8 @@ const config: Config = {
           "50%": { opacity: "1" },
         },
         pulseGlow: {
-          "0%, 100%": { boxShadow: "0 0 5px rgba(139,92,246,0.3)" },
-          "50%": { boxShadow: "0 0 20px rgba(139,92,246,0.6)" },
+          "0%, 100%": { boxShadow: "none" },
+          "50%": { boxShadow: "none" },
         },
       },
     },

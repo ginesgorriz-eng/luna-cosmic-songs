@@ -75,8 +75,8 @@ export default function ColumnaCancion({
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col h-full rounded-xl p-3 transition-all"
       style={{
-        background: `${BOX_COLORS[columnIndex % BOX_COLORS.length]}18`,
-        border: `1px solid ${BOX_COLORS[columnIndex % BOX_COLORS.length]}30`,
+        background: `${BOX_COLORS[columnIndex % BOX_COLORS.length]}40`,
+        border: `1px solid ${BOX_COLORS[columnIndex % BOX_COLORS.length]}70`,
         backdropFilter: "blur(6px)",
       }}
     >
@@ -95,8 +95,8 @@ export default function ColumnaCancion({
         ref={setNodeRef}
         className="flex-1 flex flex-col gap-2 min-h-[200px] rounded-lg p-2 mb-3 transition-all"
         style={{
-          background: "rgba(139,92,246,0.05)",
-          border: "2px dashed rgba(139,92,246,0.2)",
+          background: "rgba(255,255,255,0.03)",
+          border: "2px dashed rgba(255,255,255,0.12)",
         }}
       >
         {lineas.length > 0 ? (
@@ -137,8 +137,8 @@ export default function ColumnaCancion({
             isValidated
               ? { background: "#68A54240", color: "#68A542", border: "1px solid #68A54260" }
               : lineas.length === 0
-              ? { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}25`, color: "rgba(255,255,255,0.5)", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}40` }
-              : { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}50`, color: "#fff", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}90` }
+              ? { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}60`, color: "rgba(255,255,255,0.7)", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}80` }
+              : { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}B0`, color: "#fff", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}DD` }
           }
         >
           {isValidated ? "¡Lo tengo! ✓" : BUTTON_TEXTS[columnIndex % BUTTON_TEXTS.length]}
@@ -167,15 +167,10 @@ export default function ColumnaCancion({
         )}
       </AnimatePresence>
 
-      {/* Song name footer — visible on scroll */}
-      <div
-        className="mt-2 py-1.5 px-2 rounded-md text-center"
-        style={{
-          background: `${BOX_COLORS[columnIndex % BOX_COLORS.length]}20`,
-          border: `1px solid ${BOX_COLORS[columnIndex % BOX_COLORS.length]}35`,
-        }}
-      >
-        <p className="text-xs font-semibold text-white/60 truncate">{songName}</p>
+      {/* Song name footer — matches header style: left-aligned with verse count */}
+      <div className="mt-2 pt-2 border-t border-white/10">
+        <h3 className="text-sm font-bold text-white truncate">{songName}</h3>
+        <p className="text-xs text-white/50 mt-0.5">{lineas.length} versos</p>
       </div>
     </motion.div>
   );

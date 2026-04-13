@@ -211,7 +211,7 @@ export default function RegistroPage() {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Luna Kosmic Songs
+              Luna Ki Kosmik Songs
             </h1>
           </motion.div>
 

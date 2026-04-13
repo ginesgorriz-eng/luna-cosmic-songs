@@ -14,7 +14,7 @@ export default function LevelSelector({ level, onLevelChange, compact = false }:
         onClick={() => onLevelChange(level === 'basico' ? 'avanzado' : 'basico')}
         className="px-3 py-1.5 rounded-md font-bold text-xs text-white transition-all"
         style={{
-          background: 'rgba(139,92,246,.4)',
+          background: 'rgba(234,179,203,.3)',
           border: '2px solid rgba(236,72,153,.7)',
           textShadow: '0 1px 3px rgba(0,0,0,.7)',
         }}

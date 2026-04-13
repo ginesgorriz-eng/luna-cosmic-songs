@@ -28,6 +28,7 @@ import {
 } from "@/lib/game-logic";
 import type { Cancion, LineaCancion } from "@/lib/canciones-data";
 // ScoreBar and LevelSelector replaced by inline controls
+import Link from "next/link";
 import ColumnaCancion from "./ColumnaCancion";
 import FichaFlotante from "./FichaFlotante";
 import Particles, { useParticles } from "./Particles";
@@ -379,8 +380,7 @@ export default function TableroJuego({
           {/* Left: Title */}
           <div>
             <h1 className="text-xl md:text-2xl font-black leading-tight">
-              <span className="text-cosmic-purple">Luna</span>{' '}
-              <span className="text-cosmic-pink">Cosmic Songs</span>{' '}
+              <span style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Luna Ki Kosmik Songs</span>{' '}
               <span className="text-white">🌙</span>
             </h1>
             <p className="text-xs text-white/50 mt-0.5">
@@ -389,11 +389,14 @@ export default function TableroJuego({
           </div>
 
           {/* Right: Zona cliente */}
-          <div className="text-right shrink-0 ml-4" style={{ background: 'rgba(20,10,40,.6)', borderRadius: 10, padding: '8px 12px', border: '1px solid rgba(139,92,246,.2)' }}>
+          <div className="text-right shrink-0 ml-4" style={{ background: 'rgba(20,10,40,.6)', borderRadius: 10, padding: '8px 12px', border: '1px solid rgba(255,255,255,.1)' }}>
             <p className="text-base font-bold text-cosmic-pink">preMákina</p>
-            <p className="text-[11px] text-white/40 italic">(regístrate para guardar juego)</p>
+            <Link href="/registro" className="inline-block mt-1 px-3 py-1 rounded-md text-[11px] font-semibold transition-all" style={{ background: '#68A542', color: '#fff' }}>
+              Regístrate
+            </Link>
+            <p className="text-[9px] text-white/35 mt-0.5">para guardar el juego y los puntos</p>
             <div className="flex items-center justify-end gap-2 mt-1">
-              <span className="text-base font-black text-cosmic-purple" style={{ textShadow: '0 0 8px rgba(139,92,246,.4)' }}>{score}</span>
+              <span className="text-base font-black text-cosmic-purple">{score}</span>
               <span className="text-[10px] text-white/50">pts</span>
             </div>
             <p className="text-[11px] text-white/40 mt-0.5">
@@ -428,7 +431,7 @@ export default function TableroJuego({
           </button>
           <button
             onClick={handleNextPhase}
-            className="px-3 py-1.5 rounded-md text-xs font-semibold text-white/50 border border-white/15 hover:border-cosmic-purple/40 hover:text-white/80 transition-all ml-auto"
+            className="px-3 py-1.5 rounded-md text-xs font-semibold text-white/50 border border-white/15 hover:border-white/40 hover:text-white/80 transition-all ml-auto"
           >
             Siguientes 4 canciones →
           </button>

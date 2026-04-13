@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
 import Starfield from '@/components/Starfield';
-import { loginMakina, resetPassword } from '@/lib/supabase';
+import { resetPassword } from '@/lib/supabase';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -51,14 +51,19 @@ export default function LoginPage() {
     setLoginLoading(true);
 
     try {
-      await loginMakina(email, password);
-      router.push('/juego?level=basico');
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setLoginError(data.error || 'Error al iniciar sesión.');
+      } else {
+        router.push('/juego?level=basico');
+      }
     } catch (error) {
-      setLoginError(
-        error instanceof Error
-          ? error.message
-          : 'Error al iniciar sesión. Intenta de nuevo.'
-      );
+      setLoginError('Error de conexión. Intenta de nuevo.');
     } finally {
       setLoginLoading(false);
     }
@@ -101,32 +106,40 @@ export default function LoginPage() {
           className="w-full max-w-md"
         >
           {/* Title */}
-          <motion.div variants={itemVariants} className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-[#68A542] via-[#EAB3CB] to-[#F5D547] bg-clip-text text-transparent">
-              Luna Kosmic Songs
+          <motion.div variants={itemVariants} className="text-center mb-5">
+            <h1
+              className="text-2xl md:text-3xl font-black mb-1"
+              style={{
+                background: "linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Luna Ki Kosmik Songs
             </h1>
           </motion.div>
 
           {/* Glass morphism card */}
           <motion.div
             variants={itemVariants}
-            className="backdrop-blur-[12px] bg-white/6 border border-white/10 rounded-2xl p-8 shadow-2xl"
+            className="backdrop-blur-[12px] bg-white/6 border border-white/10 rounded-2xl p-5 shadow-2xl"
           >
             {/* Subtitle */}
             <motion.h2
               variants={itemVariants}
-              className="text-xl text-white/80 text-center mb-8 font-light"
+              className="text-sm text-white/80 text-center mb-5 font-light"
             >
               Bienvenida de vuelta, Mákina
             </motion.h2>
 
             {/* Login Form */}
-            <form onSubmit={handleLogin} className="space-y-6 mb-8">
+            <form onSubmit={handleLogin} className="space-y-4 mb-5">
               {/* Email Input */}
               <motion.div variants={itemVariants}>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-white/70 mb-2"
+                  className="block text-xs font-medium text-white/70 mb-1"
                 >
                   Email
                 </label>
@@ -137,7 +150,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@email.com"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#EAB3CB]/50 focus:bg-white/8 transition-all duration-200"
+                  className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#EAB3CB]/50 focus:bg-white/8 transition-all duration-200"
                 />
               </motion.div>
 
@@ -145,7 +158,7 @@ export default function LoginPage() {
               <motion.div variants={itemVariants}>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-white/70 mb-2"
+                  className="block text-xs font-medium text-white/70 mb-1"
                 >
                   Contraseña
                 </label>
@@ -157,20 +170,20 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#EAB3CB]/50 focus:bg-white/8 transition-all duration-200"
+                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#EAB3CB]/50 focus:bg-white/8 transition-all duration-200"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white/70 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white/70 transition-colors"
                     aria-label={
                       showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'
                     }
                   >
                     {showPassword ? (
-                      <EyeOff size={18} />
+                      <EyeOff size={14} />
                     ) : (
-                      <Eye size={18} />
+                      <Eye size={14} />
                     )}
                   </button>
                 </div>
@@ -180,7 +193,7 @@ export default function LoginPage() {
               {loginError && (
                 <motion.div
                   variants={itemVariants}
-                  className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm"
+                  className="p-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-[11px]"
                 >
                   {loginError}
                 </motion.div>
@@ -191,33 +204,33 @@ export default function LoginPage() {
                 variants={itemVariants}
                 type="submit"
                 disabled={loginLoading}
-                className="w-full px-6 py-3 bg-[#EAB3CB] hover:bg-[#f5c7db] disabled:bg-[#EAB3CB]/50 disabled:cursor-not-allowed text-[#0a0a1a] font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-[#EAB3CB]/20 hover:shadow-xl"
+                className="w-full px-4 py-2.5 bg-[#EAB3CB] hover:bg-[#f5c7db] disabled:bg-[#EAB3CB]/50 disabled:cursor-not-allowed text-[#0a0a1a] text-xs font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-[#EAB3CB]/20 hover:shadow-xl"
               >
                 {loginLoading ? 'Entrando...' : 'Entrar al Makina\'s Club'}
               </motion.button>
             </form>
 
             {/* Divider */}
-            <motion.div variants={itemVariants} className="relative my-6">
+            <motion.div variants={itemVariants} className="relative my-4">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-white/10"></div>
               </div>
             </motion.div>
 
             {/* Password Reset Section */}
-            <motion.div variants={itemVariants} className="space-y-3">
+            <motion.div variants={itemVariants} className="space-y-2">
               {!showResetForm ? (
                 <button
                   type="button"
                   onClick={() => setShowResetForm(true)}
-                  className="w-full text-sm text-[#EAB3CB] hover:text-[#f5c7db] transition-colors text-center"
+                  className="w-full text-[11px] text-[#EAB3CB] hover:text-[#f5c7db] transition-colors text-center"
                 >
                   ¿Olvidaste tu contraseña?
                 </button>
               ) : (
                 <motion.form
                   onSubmit={handlePasswordReset}
-                  className="space-y-3"
+                  className="space-y-2"
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
@@ -228,17 +241,17 @@ export default function LoginPage() {
                     value={resetEmail}
                     onChange={(e) => setResetEmail(e.target.value)}
                     placeholder="tu@email.com"
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#EAB3CB]/50 focus:bg-white/8 transition-all duration-200 text-sm"
+                    className="w-full px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#EAB3CB]/50 focus:bg-white/8 transition-all duration-200 text-xs"
                   />
 
                   {resetError && (
-                    <div className="p-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-xs">
+                    <div className="p-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-[10px]">
                       {resetError}
                     </div>
                   )}
 
                   {resetMessage && (
-                    <div className="p-2 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 text-xs">
+                    <div className="p-2 bg-green-500/10 border border-green-500/30 rounded-lg text-green-400 text-[10px]">
                       {resetMessage}
                     </div>
                   )}
@@ -247,7 +260,7 @@ export default function LoginPage() {
                     <button
                       type="submit"
                       disabled={resetLoading}
-                      className="flex-1 px-3 py-2 bg-[#EAB3CB]/20 hover:bg-[#EAB3CB]/30 disabled:bg-[#EAB3CB]/10 disabled:cursor-not-allowed text-[#EAB3CB] text-sm font-medium rounded-lg transition-colors"
+                      className="flex-1 px-3 py-1.5 bg-[#EAB3CB]/20 hover:bg-[#EAB3CB]/30 disabled:bg-[#EAB3CB]/10 disabled:cursor-not-allowed text-[#EAB3CB] text-[11px] font-medium rounded-lg transition-colors"
                     >
                       {resetLoading ? 'Enviando...' : 'Enviar'}
                     </button>
@@ -259,7 +272,7 @@ export default function LoginPage() {
                         setResetMessage('');
                         setResetError('');
                       }}
-                      className="flex-1 px-3 py-2 bg-white/5 hover:bg-white/10 text-white/70 text-sm font-medium rounded-lg transition-colors"
+                      className="flex-1 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white/70 text-[11px] font-medium rounded-lg transition-colors"
                     >
                       Cancelar
                     </button>
@@ -272,12 +285,12 @@ export default function LoginPage() {
           {/* Links */}
           <motion.div
             variants={itemVariants}
-            className="mt-8 text-center space-y-3"
+            className="mt-5 text-center space-y-2"
           >
             <div>
               <Link
                 href="/registro"
-                className="text-white/60 hover:text-[#EAB3CB] transition-colors text-sm"
+                className="text-white/60 hover:text-[#EAB3CB] transition-colors text-[11px]"
               >
                 ¿No tienes cuenta?{' '}
                 <span className="font-semibold text-[#EAB3CB]">Regístrate</span>
@@ -286,7 +299,7 @@ export default function LoginPage() {
             <div>
               <Link
                 href="/"
-                className="text-white/40 hover:text-white/60 transition-colors text-sm"
+                className="text-white/40 hover:text-white/60 transition-colors text-[11px]"
               >
                 Volver al inicio
               </Link>

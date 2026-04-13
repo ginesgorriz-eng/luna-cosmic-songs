@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-function getAdminSupabase() {
+function getServiceSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
   return createClient(url, serviceKey);
@@ -19,42 +19,52 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabase = getAdminSupabase();
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    const supabase = getServiceSupabase();
 
-    // 1. Create auth user with admin client (service role)
-    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-      email,
-      password,
-      email_confirm: true, // auto-confirm email
+    // 1. Create auth user via Supabase Admin REST API
+    const createRes = await fetch(`${url}/auth/v1/admin/users`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${serviceKey}`,
+        'apikey': serviceKey,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        email_confirm: true,
+      }),
     });
 
-    if (authError) {
-      console.error('Auth error:', authError);
-      if (authError.message.includes('already') || authError.message.includes('duplicate')) {
+    const createData = await createRes.json();
+
+    if (!createRes.ok) {
+      const errMsg = createData.msg || createData.message || createData.error || JSON.stringify(createData);
+      if (errMsg.toLowerCase().includes('already') || errMsg.toLowerCase().includes('duplicate')) {
         return NextResponse.json(
           { error: 'Este email ya está registrado. ¿Quieres iniciar sesión?' },
           { status: 409 }
         );
       }
-      return NextResponse.json(
-        { error: authError.message },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: errMsg }, { status: 400 });
     }
 
-    if (!authData.user) {
+    const userId = createData.id;
+    if (!userId) {
       return NextResponse.json(
         { error: 'Error creando el usuario.' },
         { status: 500 }
       );
     }
 
-    // 2. Create makinas profile with service role (bypasses RLS)
+    // 2. Create makinas profile with service role client (bypasses RLS)
     const { data: profile, error: dbError } = await supabase
       .from('makinas')
       .insert([
         {
-          id: authData.user.id,
+          id: userId,
           email,
           nombre,
           pronombre,
@@ -71,8 +81,14 @@ export async function POST(request: Request) {
 
     if (dbError) {
       console.error('DB error:', dbError);
-      // Rollback: delete the auth user if profile creation fails
-      await supabase.auth.admin.deleteUser(authData.user.id);
+      // Rollback: delete the auth user via REST API
+      await fetch(`${url}/auth/v1/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${serviceKey}`,
+          'apikey': serviceKey,
+        },
+      });
       return NextResponse.json(
         { error: 'Error guardando el perfil. ' + dbError.message },
         { status: 500 }
@@ -81,7 +97,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      user: { id: authData.user.id, email },
+      user: { id: userId, email },
       profile,
     });
 

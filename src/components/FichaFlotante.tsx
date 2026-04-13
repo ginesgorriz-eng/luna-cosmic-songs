@@ -97,7 +97,7 @@ export default function FichaFlotante({
         relative px-2.5 py-1.5 rounded-md backdrop-blur-sm cursor-grab active:cursor-grabbing
         touch-none select-none transition-all duration-200 text-white
         bg-gradient-to-br from-white/10 to-white/5 hover:from-white/15 hover:to-white/10
-        ${isDragging ? 'scale-125 rotate-6 z-[1000] border-purple-400 shadow-lg shadow-purple-500/50' : vStyle ? '' : 'border border-white/20'}
+        ${isDragging ? 'scale-125 rotate-6 z-[1000] border-white/40 shadow-lg shadow-white/20' : vStyle ? '' : 'border border-white/20'}
       `}
       {...attributes}
       {...listeners}

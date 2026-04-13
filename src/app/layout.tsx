@@ -3,7 +3,7 @@ import "./globals.css";
 import { SpotifyProvider } from "@/contexts/SpotifyContext";
 
 export const metadata: Metadata = {
-  title: "Luna Kosmic Songs — Portal de Makinas",
+  title: "Luna Ki Kosmik Songs — Portal de Makinas",
   description:
     "Las canciones de Luna se han perdido en el espacio. ¿Nos ayudas a recomponerlas, Makina?",
 };

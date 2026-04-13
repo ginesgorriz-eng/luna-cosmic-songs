@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Starfield from "@/components/Starfield";
@@ -9,7 +9,7 @@ import { useSpotify } from "@/contexts/SpotifyContext";
 
 export default function HomePage() {
   const router = useRouter();
-  const { spotifyUnlocked, iframeRef } = useSpotify();
+  const { spotifyUnlocked } = useSpotify();
   const [level, setLevel] = useState<"basico" | "avanzado">("basico");
   const [showSpotifyHint, setShowSpotifyHint] = useState(false);
 
@@ -68,7 +68,7 @@ export default function HomePage() {
                   backgroundClip: "text",
                 }}
               >
-                Luna Kosmic Songs
+                Luna Ki Kosmik Songs
               </span>
             </h1>
             <div
@@ -88,7 +88,8 @@ export default function HomePage() {
             <p className="text-cosmic-pink text-[11px] font-semibold mt-1">— Luna 🌙</p>
           </motion.div>
 
-          {/* Spotify — INLINE, right after the message */}
+          {/* Spotify — the iframe is rendered by SpotifyProvider as a fixed overlay on home.
+              We just reserve the space here + show text around it. */}
           <motion.div
             variants={itemVariants}
             className="max-w-md mx-auto mb-5"
@@ -96,39 +97,53 @@ export default function HomePage() {
             <p className="text-white/40 text-xs text-center mb-2">
               Escucha CL34N. Dale al play para poder jugar
             </p>
-            <iframe
-              ref={iframeRef}
-              style={{
-                borderRadius: 12,
-                width: "100%",
-                maxWidth: 400,
-                margin: "0 auto",
-                display: "block",
-              }}
-              src="https://open.spotify.com/embed/album/4mGvnfMaCkGXo1LHWjiOmD?utm_source=generator&theme=0"
-              height={152}
-              frameBorder={0}
-              allowFullScreen
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-              loading="lazy"
-            />
+            {/* Space for the fixed-positioned iframe from SpotifyProvider */}
+            <div style={{ height: 152 }} />
             {spotifyUnlocked && (
-              <p className="text-center mt-2" style={{ color: "#22c55e", fontSize: 12, fontWeight: 600 }}>
+              <p className="text-center mt-2" style={{ color: "#68A542", fontSize: 12, fontWeight: 600 }}>
                 ✓ Spotify conectado — ¡Adelante!
               </p>
             )}
           </motion.div>
 
-          {/* Level Selector */}
-          <LevelSelector level={level} onLevelChange={setLevel} />
+          {/* Level Selector — two pills side by side */}
+          <motion.div
+            variants={itemVariants}
+            className="flex gap-3 max-w-sm mx-auto mb-5"
+          >
+            <button
+              onClick={() => setLevel("basico")}
+              className="flex-1 px-3 py-2.5 rounded-lg text-center transition-all cursor-pointer"
+              style={
+                level === "basico"
+                  ? { background: "#EAB3CB", color: "#1a1a2e", boxShadow: "none" }
+                  : { background: "#1a1a2e", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(234,179,203,0.3)" }
+              }
+            >
+              <span className="block text-xs font-semibold">Nivel Fácil</span>
+              <span className="block text-[10px] italic mt-0.5" style={{ opacity: 0.65 }}>8 líneas</span>
+            </button>
+            <button
+              onClick={() => setLevel("avanzado")}
+              className="flex-1 px-3 py-2.5 rounded-lg text-center transition-all cursor-pointer"
+              style={
+                level === "avanzado"
+                  ? { background: "#F5D547", color: "#1a1a2e", boxShadow: "none" }
+                  : { background: "#1a1a2e", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(245,213,71,0.3)" }
+              }
+            >
+              <span className="block text-xs font-semibold">Nivel SuperMákina</span>
+              <span className="block text-[10px] italic mt-0.5" style={{ opacity: 0.65 }}>canción entera</span>
+            </button>
+          </motion.div>
 
           {/* Passive message — Comienza el Viaje Cósmico */}
           <motion.div
             variants={itemVariants}
-            className="text-center mt-5 mb-3 max-w-lg mx-auto"
+            className="text-center mb-3 max-w-lg mx-auto"
           >
             <p
-              className="text-base font-bold italic"
+              className="text-sm font-bold italic"
               style={{
                 background: "linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)",
                 WebkitBackgroundClip: "text",
@@ -141,61 +156,64 @@ export default function HomePage() {
             </p>
           </motion.div>
 
-          {/* Action Buttons — 3 keys */}
+          {/* Action Buttons — 3 in a row */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-col gap-3 mt-2 max-w-lg mx-auto"
+            className="max-w-lg mx-auto"
           >
             {showSpotifyHint && !spotifyUnlocked && (
               <motion.p
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-cosmic-pink text-sm font-medium text-center"
+                className="text-cosmic-pink text-xs font-medium text-center mb-2"
               >
                 Dale play a Spotify para empezar 🌙
               </motion.p>
             )}
             <div className="flex gap-2">
-              {/* Registrarme como Mákina — #68A542 verde */}
+              {/* Registrarme — #68A542 verde */}
               <button
                 onClick={() => handlePlay("register")}
-                className="flex-1 px-3 py-3 rounded-2xl text-sm font-bold transition-all cursor-pointer"
+                className="flex-1 px-2 py-2.5 rounded-lg text-center transition-all cursor-pointer"
                 style={{
-                  background: spotifyUnlocked ? "rgba(104,165,66,0.25)" : "rgba(104,165,66,0.1)",
-                  color: spotifyUnlocked ? "#68A542" : "rgba(104,165,66,0.4)",
-                  border: `1px solid ${spotifyUnlocked ? "#68A542" : "rgba(104,165,66,0.2)"}`,
+                  background: spotifyUnlocked ? "#68A542" : "#1a1a2e",
+                  color: spotifyUnlocked ? "#fff" : "rgba(104,165,66,0.4)",
+                  border: spotifyUnlocked ? "none" : "1px solid rgba(104,165,66,0.2)",
+                  boxShadow: "none",
                 }}
               >
-                Registrarme como Mákina y jugar
+                <span className="block text-[11px] font-bold leading-tight">Registrarme como Mákina</span>
+                <span className="block text-[9px] mt-0.5" style={{ opacity: 0.7 }}>y jugar</span>
               </button>
-              {/* Ya soy Mákina — #EAB3CB rosa */}
+              {/* Ya soy Mákina — #8FCBE4 azul */}
               <button
                 onClick={() => handlePlay("login")}
-                className="flex-1 px-3 py-3 rounded-2xl text-sm font-bold transition-all cursor-pointer"
+                className="flex-1 px-2 py-2.5 rounded-lg text-center transition-all cursor-pointer"
                 style={{
-                  background: spotifyUnlocked ? "rgba(234,179,203,0.25)" : "rgba(234,179,203,0.1)",
-                  color: spotifyUnlocked ? "#EAB3CB" : "rgba(234,179,203,0.4)",
-                  border: `1px solid ${spotifyUnlocked ? "#EAB3CB" : "rgba(234,179,203,0.2)"}`,
+                  background: spotifyUnlocked ? "#8FCBE4" : "#1a1a2e",
+                  color: spotifyUnlocked ? "#1a1a2e" : "rgba(143,203,228,0.4)",
+                  border: spotifyUnlocked ? "none" : "1px solid rgba(143,203,228,0.2)",
+                  boxShadow: "none",
                 }}
               >
-                Ya soy Mákina registrada
+                <span className="block text-[11px] font-bold leading-tight">Ya soy Mákina</span>
+                <span className="block text-[9px] mt-0.5" style={{ opacity: 0.7 }}>registrada</span>
+              </button>
+              {/* Jugar sin registrar — #FABF06 amarillo */}
+              <button
+                onClick={() => handlePlay("guest")}
+                className="flex-1 px-2 py-2.5 rounded-lg text-center transition-all cursor-pointer"
+                style={{
+                  background: spotifyUnlocked ? "#FABF06" : "#1a1a2e",
+                  color: spotifyUnlocked ? "#1a1a2e" : "rgba(250,191,6,0.4)",
+                  border: spotifyUnlocked ? "none" : "1px solid rgba(250,191,6,0.2)",
+                  boxShadow: "none",
+                }}
+              >
+                <span className="block text-[10px] font-semibold leading-tight">Jugar sin registrar</span>
+                <span className="block text-[8px] mt-0.5" style={{ opacity: 0.7 }}>sin puntos ni avances</span>
               </button>
             </div>
-            {/* Jugar sin registrar */}
-            <button
-              onClick={() => handlePlay("guest")}
-              className="px-3 py-2 rounded-2xl text-xs transition-all cursor-pointer mx-auto"
-              style={{
-                color: spotifyUnlocked ? "rgba(234,179,203,0.7)" : "rgba(234,179,203,0.3)",
-                border: "none",
-                background: "transparent",
-              }}
-            >
-              Jugar sin registrar
-              <span className="block text-[10px] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>
-                (no podrás acumular puntos ni guardar avances del juego)
-              </span>
-            </button>
           </motion.div>
 
           {/* Footer */}
@@ -203,7 +221,7 @@ export default function HomePage() {
             variants={itemVariants}
             className="text-center text-white/40 text-xs mt-8"
           >
-            Luna Kosmic Songs — Portal de Makinas
+            Luna Ki Kosmik Songs — Portal de Makinas
           </motion.p>
         </motion.div>
       </div>
