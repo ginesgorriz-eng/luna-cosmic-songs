@@ -3,6 +3,14 @@ import Link from "next/link";
 export default function PrivacidadPage() {
   return (
     <div className="min-h-screen relative" style={{ backgroundColor: "#0a0a1a" }}>
+      {/* Background image */}
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/bg-privacidad.jpg')",
+          filter: "brightness(0.25)",
+        }}
+      />
       <div className="relative z-10 py-10 px-4 sm:px-6 lg:px-8 max-w-2xl mx-auto">
         <h1
           className="text-2xl sm:text-3xl font-bold mb-8"

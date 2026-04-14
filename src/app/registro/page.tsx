@@ -193,6 +193,14 @@ export default function RegistroPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#0a0a1a' }}>
+      {/* Background image */}
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/bg-registro.jpg')",
+          filter: "brightness(0.3)",
+        }}
+      />
       <Starfield />
 
       <div className="relative z-10 py-6 px-4 sm:px-6 lg:px-8">

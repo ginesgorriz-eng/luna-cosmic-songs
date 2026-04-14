@@ -49,6 +49,14 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Background image */}
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/bg-home.jpg')",
+          filter: "brightness(0.35)",
+        }}
+      />
       <Starfield />
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
         <motion.div
