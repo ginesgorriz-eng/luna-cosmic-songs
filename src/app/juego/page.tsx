@@ -2,7 +2,6 @@
 
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Starfield from "@/components/Starfield";
 import TableroJuego from "@/components/TableroJuego";
 
 function JuegoContent() {
@@ -13,7 +12,6 @@ function JuegoContent() {
 
   return (
     <main className="relative min-h-screen bg-cosmic-bg">
-      <Starfield />
       <TableroJuego level={level} onLevelChange={setLevel} />
     </main>
   );

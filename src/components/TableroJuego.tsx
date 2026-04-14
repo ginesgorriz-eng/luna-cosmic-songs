@@ -33,7 +33,6 @@ import ColumnaCancion from "./ColumnaCancion";
 import FichaFlotante from "./FichaFlotante";
 import Particles, { useParticles } from "./Particles";
 import ToastContainer, { useToast } from "./Toast";
-import Starfield from "./Starfield";
 
 interface TableroJuegoProps {
   level: "basico" | "avanzado";
@@ -357,7 +356,6 @@ export default function TableroJuego({
   if (!phasesReady) {
     return (
       <div className="relative min-h-screen w-full bg-cosmic-bg flex items-center justify-center">
-        <Starfield />
         <p className="relative z-10 text-white/50 text-lg">Preparando el cosmos...</p>
       </div>
     );
@@ -374,13 +372,10 @@ export default function TableroJuego({
       <div
         className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/images/luna-cover.jpeg')",
-          filter: "brightness(0.50) blur(2px)",
+          backgroundImage: "url('/images/bg-juego.jpg')",
+          filter: "brightness(0.50)",
         }}
       />
-      {/* Starfield on top of cover */}
-      <Starfield />
-
       {/* Content */}
       <div className="relative z-10 px-4 py-3 max-w-7xl mx-auto">
         {/* Top bar: Title left + Zona cliente right */}
@@ -393,7 +388,7 @@ export default function TableroJuego({
           <div>
             <h1 className="text-[11px] md:text-2xl font-black leading-tight">
               <span className="italic" style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Luna Ki</span>{' '}
-              <span style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>misión lyrics</span>{' '}
+              <span style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Misión lyrics</span>{' '}
               <span className="text-white">🌙</span>
             </h1>
             <p className="text-xs text-white/50 mt-0.5">

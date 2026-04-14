@@ -336,7 +336,7 @@ export const ALL_SONGS: Cancion[] = [
   { id: '05', nombre: 'Honey', publicada: true, lineas: SONG_05 },
   { id: '06', nombre: 'Iglú', publicada: false, lineas: SONG_06 },
   { id: '07', nombre: 'Luna Nueva', publicada: false, lineas: SONG_07 },
-  { id: '08', nombre: 'Voy a Contracorriente', publicada: false, lineas: SONG_08 },
+  { id: '08', nombre: 'Contracorriente', publicada: false, lineas: SONG_08 },
   { id: '09', nombre: 'Magia', publicada: false, lineas: SONG_09 },
   { id: '10', nombre: 'A-N-G-E-L', publicada: false, lineas: SONG_10 },
   { id: '11', nombre: 'Abril', publicada: false, lineas: SONG_11 },

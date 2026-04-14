@@ -74,7 +74,7 @@ export default function FichaFlotante({
           boxShadow: `0 4px 12px ${vStyle.shadow}`,
         } : {}),
       }}
-      initial={{ opacity: 0, scale: 0.8 }}
+      initial={isInColumn ? false : { opacity: 0, scale: 0.8 }}
       animate={{
         opacity: 1,
         scale: 1,
@@ -82,7 +82,7 @@ export default function FichaFlotante({
         rotate: floatVariants.rotate,
       }}
       transition={{
-        opacity: { duration: 0.3 },
+        opacity: { duration: isInColumn ? 0 : 0.3 },
         ...floatTransition,
       }}
       whileHover={{ scale: isInColumn ? 1 : 1.05 }}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Starfield from "@/components/Starfield";
+
 import LevelSelector from "@/components/LevelSelector";
 import { useSpotify } from "@/contexts/SpotifyContext";
 
@@ -49,7 +49,14 @@ export default function HomePage() {
 
   return (
     <>
-      <Starfield />
+      {/* Background image */}
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/bg-home.jpg')",
+          filter: "brightness(0.35)",
+        }}
+      />
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
         <motion.div
           variants={containerVariants}
@@ -68,7 +75,7 @@ export default function HomePage() {
                   backgroundClip: "text",
                 }}
               >
-                Luna Ki misión lyrics
+                Luna Ki Misión lyrics
               </span>
             </h1>
             <div

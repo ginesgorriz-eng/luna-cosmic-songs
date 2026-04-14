@@ -8,33 +8,43 @@
 
 ## 1. ESTADO ACTUAL DEL PROYECTO
 
-- **Nombre:** Luna Kosmic Songs (con K)
+- **Nombre:** Luna Ki misión lyrics
 - **Estado:** M7 completado (~70% del proyecto total)
-- **Última sesión:** 13 abr 2026
-- **Último commit:** `6003d07` — feat: footer global, cookie banner, spotify persistence
+- **Última sesión:** 14 abr 2026
 - **Deploy:** Vercel (sincronizado con GitHub)
 - **Bugs activos:** 0 confirmados
-- **Bugs resueltos que NO deben reintroducirse:** 3 (ver sección 3)
+- **Bugs resueltos que NO deben reintroducirse:** 3 + solución definitiva Spotify (ver sección 2.1)
 
 ---
 
 ## 2. APRENDIZAJES CRÍTICOS — NO VIOLAR
 
-### 2.1 Spotify deja de sonar al cambiar de página (B1)
+### 2.1 Spotify deja de sonar al cambiar de página (B1) — SOLUCIÓN DEFINITIVA
 **Severidad:** CRÍTICA
-**Fichero clave:** `src/contexts/SpotifyContext.tsx` (91 líneas)
+**Fichero clave:** `src/contexts/SpotifyContext.tsx` (182 líneas, enfoque 5)
 
-**Problema:** Al navegar de `/` a `/juego`, React desmonta componentes de página. Si el iframe de Spotify está en un componente que se desmonta, la música para.
+**Problema:** Al navegar de `/` a `/juego`, el audio de Spotify para.
 
-**Solución implementada:** SpotifyProvider vive en `layout.tsx` envolviendo TODA la app. El iframe se crea UNA SOLA VEZ dentro del Provider. En home se renderiza visible en `#spotify-portal-target` usando `createPortal`. En otras páginas se mueve a un div oculto con CSS (`position: fixed; left: -9999px`) pero NUNCA se elimina del DOM.
+**Causa raíz descubierta (14 abr 2026):** `appendChild` de un iframe a otro nodo padre = el navegador **recarga** el iframe = audio muerto. Esto aplica a CUALQUIER movimiento en el DOM, incluyendo `createPortal` ternario, appendChild manual, etc.
+
+**5 enfoques probados, solo el 5.º funciona:**
+1. ❌ `createPortal` ternario — React recrea al cambiar ramas
+2. ❌ `appendChild` entre host oculto y portal target — target destruido al desmontar página
+3. ❌ `position: fixed` overlay — coordenadas mal calculadas (scrollY + fixed), z-index bajo
+4. ❌ Contenedor persistente en body + `appendChild` al target — appendChild = recarga iframe
+5. ✅ **Contenedor SIEMPRE en body + solo cambios CSS** — FUNCIONA
+
+**Solución implementada:** Iframe creado con `document.createElement` fuera de React, SIEMPRE hijo de `document.body`. En home: `position: fixed` con `getBoundingClientRect()` sobre `#spotify-portal-target`, `zIndex: 9999`. En otras páginas: CSS off-screen. Re-alineación en scroll/resize con `requestAnimationFrame`.
+
+**Regla de oro:** Mover un iframe en el DOM = recargarlo. SOLO cambiar CSS.
 
 **Verificación rápida:**
 ```bash
-grep -c "createPortal" src/contexts/SpotifyContext.tsx   # debe ser ≥1
-grep -c "SpotifyProvider" src/app/layout.tsx              # debe ser ≥2
+grep -c "createElement.*iframe" src/contexts/SpotifyContext.tsx  # debe ser ≥1
+grep -c "SpotifyProvider" src/app/layout.tsx                      # debe ser ≥2
 ```
 
-**Regla:** NUNCA desmontar el iframe. NUNCA reescribir SpotifyContext.tsx sin leer esto primero.
+**Regla:** NUNCA mover el iframe. NUNCA reescribir SpotifyContext.tsx sin leer esto primero.
 
 ### 2.2 Ficheros truncados en sandbox (B2)
 **Severidad:** CRÍTICA
@@ -69,7 +79,7 @@ Si difieren más de 3 líneas → recuperar de git: `git checkout HEAD -- FICHER
 | ID | Invariante | Verificación |
 |----|-----------|--------------|
 | I1 | SpotifyProvider envuelve children en layout.tsx | `grep -q "SpotifyProvider" src/app/layout.tsx` |
-| I2 | Iframe de Spotify NUNCA se desmonta, solo CSS | `grep -c "<iframe" src/contexts/SpotifyContext.tsx` ≥1 |
+| I2 | Iframe de Spotify NUNCA se mueve en el DOM, solo CSS | `grep -c "createElement.*iframe" src/contexts/SpotifyContext.tsx` ≥1 |
 | I3 | Link a registro visible en /juego | `grep -q "registro" src/components/TableroJuego.tsx` |
 | I4 | 1 publicada + 3 inéditas por fase | Verificar en game-logic.ts |
 | I5 | Texto de Luna intocable ("Ostia Makinas...") | `grep -q "Ostia Makinas" src/app/page.tsx` |
@@ -86,7 +96,7 @@ Ver fichero `.locked-files` para la lista completa.
 
 | Fichero | Líneas | Por qué está protegido |
 |---------|--------|------------------------|
-| `src/contexts/SpotifyContext.tsx` | 91 | Bug B1: persistencia Spotify |
+| `src/contexts/SpotifyContext.tsx` | 182 | Bug B1: persistencia Spotify (enfoque 5) |
 | `src/app/layout.tsx` | 29 | Invariante I1: SpotifyProvider |
 | `src/app/page.tsx` | 223 | Invariante I5: texto de Luna |
 | `src/components/TableroJuego.tsx` | 541 | Bugs B3: puntos, validación, fases |

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Starfield from '@/components/Starfield';
+
 
 interface FormData {
   nombre: string;
@@ -123,7 +123,7 @@ export default function RegistroPage() {
     }
 
     if (!legalAccepted) {
-      newErrors.legal = 'Debes aceptar la Política de Privacidad y los Términos y Condiciones';
+      newErrors.legal = 'Debes aceptar recibir comunicaciones sobre Luna Ki';
     }
 
     setErrors(newErrors);
@@ -193,10 +193,16 @@ export default function RegistroPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#0a0a1a' }}>
-      <Starfield />
-
+      {/* Background image */}
+      <div
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/images/bg-registro.jpg')",
+          filter: "brightness(0.3)",
+        }}
+      />
       <div className="relative z-10 py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-sm mx-auto">
+        <div className="max-w-[270px] mx-auto">
           {/* Logo/Title */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -213,7 +219,7 @@ export default function RegistroPage() {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Luna Ki misión lyrics
+              Luna Ki Misión lyrics
             </h1>
           </motion.div>
 
@@ -484,9 +490,11 @@ export default function RegistroPage() {
                   className="mt-1 w-4 h-4 rounded cursor-pointer accent-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 />
                 <span className="text-white text-xs leading-relaxed">
-                  He leído y acepto la Política de Privacidad y los Términos y Condiciones.
-                  Autorizo el tratamiento de mis datos personales para la gestión de mi cuenta
-                  y el envío de comunicaciones relacionadas con Luna Ki y el Makina's Club.
+                  Acepto recibir comunicaciones sobre Luna Ki y eventos relacionados a su carrera.{' '}
+                  <span className="block mt-1 text-white/50 text-[10px] leading-relaxed">
+                    Responsable: Zocolski Art and Music Production S.L. Derechos de acceso, rectificación, supresión, limitación y oposición en info@lunaki.com. Puede consultar la información detallada{' '}
+                    <a href="/privacidad" target="_blank" className="underline text-[#EAB3CB] hover:text-[#EAB3CB]/80 transition">aquí</a>.
+                  </span>
                 </span>
               </label>
               {errors.legal && (
