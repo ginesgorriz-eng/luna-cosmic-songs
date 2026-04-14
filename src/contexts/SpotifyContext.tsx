@@ -31,10 +31,12 @@ function getOrCreateContainer(): HTMLDivElement {
   if (!el) {
     el = document.createElement("div");
     el.id = CONTAINER_ID;
-    // Start hidden but IN viewport — mobile browsers pause off-screen iframes
+    // Start hidden but rendered at real player size inside viewport.
+    // Mobile browsers throttle/pause tiny or off-screen iframes.
+    // 300×80 keeps the iframe "visible" to the browser engine.
     Object.assign(el.style, {
-      position: "fixed", bottom: "0px", right: "0px",
-      width: "10px", height: "10px", overflow: "hidden",
+      position: "fixed", bottom: "0px", left: "0px",
+      width: "300px", height: "80px", overflow: "hidden",
       pointerEvents: "none", zIndex: "-1", opacity: "0.01",
     });
     document.body.appendChild(el);
@@ -42,17 +44,16 @@ function getOrCreateContainer(): HTMLDivElement {
   return el;
 }
 
-// Hide container WITHOUT moving it off-screen.
-// Mobile browsers pause media in iframes positioned outside the viewport
-// (left: -9999px). Keeping it at bottom-right with 1×1px and near-zero
-// opacity keeps audio alive on iOS Safari / Chrome Android.
+// Hide container WITHOUT moving it off-screen or shrinking it.
+// Mobile browsers pause media in tiny/off-screen iframes.
+// 300×80 at near-zero opacity keeps audio alive on iOS/Android.
 function hideContainer(el: HTMLDivElement) {
   Object.assign(el.style, {
-    position: "fixed", bottom: "0px", right: "0px",
-    width: "10px", height: "10px", overflow: "hidden",
+    position: "fixed", bottom: "0px", left: "0px",
+    width: "300px", height: "80px", overflow: "hidden",
     pointerEvents: "none", zIndex: "-1", opacity: "0.01",
-    // Remove left/top that may linger from positionOverTarget
-    left: "auto", top: "auto",
+    // Remove top that may linger from positionOverTarget
+    top: "auto", right: "auto",
   });
 }
 
