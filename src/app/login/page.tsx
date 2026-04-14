@@ -137,7 +137,7 @@ export default function LoginPage() {
                 backgroundClip: "text",
               }}
             >
-              Luna Ki misión lyrics
+              Luna Ki Misión lyrics
             </h1>
           </motion.div>
 

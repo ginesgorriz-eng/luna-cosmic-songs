@@ -31,22 +31,28 @@ function getOrCreateContainer(): HTMLDivElement {
   if (!el) {
     el = document.createElement("div");
     el.id = CONTAINER_ID;
-    // Start hidden off-screen — ALWAYS a child of document.body
+    // Start hidden but IN viewport — mobile browsers pause off-screen iframes
     Object.assign(el.style, {
-      position: "fixed", left: "-9999px", top: "-9999px",
+      position: "fixed", bottom: "0px", right: "0px",
       width: "1px", height: "1px", overflow: "hidden",
-      pointerEvents: "none", zIndex: "-1",
+      pointerEvents: "none", zIndex: "-1", opacity: "0.01",
     });
     document.body.appendChild(el);
   }
   return el;
 }
 
+// Hide container WITHOUT moving it off-screen.
+// Mobile browsers pause media in iframes positioned outside the viewport
+// (left: -9999px). Keeping it at bottom-right with 1×1px and near-zero
+// opacity keeps audio alive on iOS Safari / Chrome Android.
 function hideContainer(el: HTMLDivElement) {
   Object.assign(el.style, {
-    position: "fixed", left: "-9999px", top: "-9999px",
+    position: "fixed", bottom: "0px", right: "0px",
     width: "1px", height: "1px", overflow: "hidden",
-    pointerEvents: "none", zIndex: "-1",
+    pointerEvents: "none", zIndex: "-1", opacity: "0.01",
+    // Remove left/top that may linger from positionOverTarget
+    left: "auto", top: "auto",
   });
 }
 
@@ -64,6 +70,9 @@ function positionOverTarget(container: HTMLDivElement, target: HTMLElement) {
     overflow: "visible",
     pointerEvents: "auto",
     zIndex: "9999",
+    opacity: "1",
+    // Clear bottom/right from hideContainer
+    bottom: "auto", right: "auto",
   });
 }
 

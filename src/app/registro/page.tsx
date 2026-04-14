@@ -123,7 +123,7 @@ export default function RegistroPage() {
     }
 
     if (!legalAccepted) {
-      newErrors.legal = 'Debes aceptar la Política de Privacidad y los Términos y Condiciones';
+      newErrors.legal = 'Debes aceptar recibir comunicaciones sobre Luna Ki';
     }
 
     setErrors(newErrors);
@@ -213,7 +213,7 @@ export default function RegistroPage() {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Luna Ki misión lyrics
+              Luna Ki Misión lyrics
             </h1>
           </motion.div>
 
@@ -484,9 +484,11 @@ export default function RegistroPage() {
                   className="mt-1 w-4 h-4 rounded cursor-pointer accent-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 />
                 <span className="text-white text-xs leading-relaxed">
-                  He leído y acepto la Política de Privacidad y los Términos y Condiciones.
-                  Autorizo el tratamiento de mis datos personales para la gestión de mi cuenta
-                  y el envío de comunicaciones relacionadas con Luna Ki y el Makina's Club.
+                  Acepto recibir comunicaciones sobre Luna Ki y eventos relacionados a su carrera.{' '}
+                  <span className="block mt-1 text-white/50 text-[10px] leading-relaxed">
+                    Responsable: Zocolski Art and Music Production S.L. Derechos de acceso, rectificación, supresión, limitación y oposición en info@lunaki.com. Puede consultar la información detallada{' '}
+                    <a href="/privacidad" target="_blank" className="underline text-[#EAB3CB] hover:text-[#EAB3CB]/80 transition">aquí</a>.
+                  </span>
                 </span>
               </label>
               {errors.legal && (

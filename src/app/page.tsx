@@ -68,7 +68,7 @@ export default function HomePage() {
                   backgroundClip: "text",
                 }}
               >
-                Luna Ki misión lyrics
+                Luna Ki Misión lyrics
               </span>
             </h1>
             <div

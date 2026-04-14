@@ -393,7 +393,7 @@ export default function TableroJuego({
           <div>
             <h1 className="text-[11px] md:text-2xl font-black leading-tight">
               <span className="italic" style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Luna Ki</span>{' '}
-              <span style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>misión lyrics</span>{' '}
+              <span style={{ background: 'linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Misión lyrics</span>{' '}
               <span className="text-white">🌙</span>
             </h1>
             <p className="text-xs text-white/50 mt-0.5">
