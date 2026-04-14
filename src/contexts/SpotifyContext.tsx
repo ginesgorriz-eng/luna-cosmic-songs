@@ -34,7 +34,7 @@ function getOrCreateContainer(): HTMLDivElement {
     // Start hidden but IN viewport — mobile browsers pause off-screen iframes
     Object.assign(el.style, {
       position: "fixed", bottom: "0px", right: "0px",
-      width: "1px", height: "1px", overflow: "hidden",
+      width: "10px", height: "10px", overflow: "hidden",
       pointerEvents: "none", zIndex: "-1", opacity: "0.01",
     });
     document.body.appendChild(el);
@@ -49,7 +49,7 @@ function getOrCreateContainer(): HTMLDivElement {
 function hideContainer(el: HTMLDivElement) {
   Object.assign(el.style, {
     position: "fixed", bottom: "0px", right: "0px",
-    width: "1px", height: "1px", overflow: "hidden",
+    width: "10px", height: "10px", overflow: "hidden",
     pointerEvents: "none", zIndex: "-1", opacity: "0.01",
     // Remove left/top that may linger from positionOverTarget
     left: "auto", top: "auto",
@@ -101,7 +101,8 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
       iframe.frameBorder = "0";
       iframe.allowFullscreen = true;
       iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
-      iframe.loading = "lazy";
+      // No lazy loading — mobile browsers throttle/suspend lazy iframes
+      // that appear non-visible, causing audio skips every 10-20s.
       container.appendChild(iframe);
       (iframeRef as React.MutableRefObject<HTMLIFrameElement>).current = iframe;
     } else {
