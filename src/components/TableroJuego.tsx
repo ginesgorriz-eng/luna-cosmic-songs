@@ -33,7 +33,6 @@ import ColumnaCancion from "./ColumnaCancion";
 import FichaFlotante from "./FichaFlotante";
 import Particles, { useParticles } from "./Particles";
 import ToastContainer, { useToast } from "./Toast";
-import Starfield from "./Starfield";
 
 interface TableroJuegoProps {
   level: "basico" | "avanzado";
@@ -357,7 +356,6 @@ export default function TableroJuego({
   if (!phasesReady) {
     return (
       <div className="relative min-h-screen w-full bg-cosmic-bg flex items-center justify-center">
-        <Starfield />
         <p className="relative z-10 text-white/50 text-lg">Preparando el cosmos...</p>
       </div>
     );
@@ -378,9 +376,6 @@ export default function TableroJuego({
           filter: "brightness(0.50) blur(2px)",
         }}
       />
-      {/* Starfield on top of cover */}
-      <Starfield />
-
       {/* Content */}
       <div className="relative z-10 px-4 py-3 max-w-7xl mx-auto">
         {/* Top bar: Title left + Zona cliente right */}

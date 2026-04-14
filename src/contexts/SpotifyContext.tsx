@@ -67,9 +67,9 @@ function positionOverTarget(container: HTMLDivElement, target: HTMLElement) {
     top: `${rect.top}px`,
     width: `${rect.width}px`,
     height: `${Math.max(rect.height, 152)}px`,
-    overflow: "visible",
+    overflow: "hidden",
     pointerEvents: "auto",
-    zIndex: "9999",
+    zIndex: "50",
     opacity: "1",
     // Clear bottom/right from hideContainer
     bottom: "auto", right: "auto",

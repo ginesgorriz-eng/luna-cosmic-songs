@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Starfield from '@/components/Starfield';
+
 
 interface FormData {
   nombre: string;
@@ -201,8 +201,6 @@ export default function RegistroPage() {
           filter: "brightness(0.3)",
         }}
       />
-      <Starfield />
-
       <div className="relative z-10 py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-sm mx-auto">
           {/* Logo/Title */}

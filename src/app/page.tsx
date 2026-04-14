@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import Starfield from "@/components/Starfield";
+
 import LevelSelector from "@/components/LevelSelector";
 import { useSpotify } from "@/contexts/SpotifyContext";
 
@@ -57,7 +57,6 @@ export default function HomePage() {
           filter: "brightness(0.35)",
         }}
       />
-      <Starfield />
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
         <motion.div
           variants={containerVariants}
