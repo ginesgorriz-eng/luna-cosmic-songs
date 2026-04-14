@@ -373,7 +373,7 @@ export default function TableroJuego({
         className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url('/images/bg-juego.jpg')",
-          filter: "brightness(0.50) blur(2px)",
+          filter: "brightness(0.50)",
         }}
       />
       {/* Content */}

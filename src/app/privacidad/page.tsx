@@ -11,10 +11,10 @@ export default function PrivacidadPage() {
           filter: "brightness(0.25)",
         }}
       />
-      <div className="relative z-10 min-h-screen flex items-start justify-end py-10 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-xs sm:max-w-sm mt-[15vh]">
+      <div className="relative z-10 min-h-screen flex items-start py-10 px-4 sm:px-6 lg:px-8" style={{ paddingLeft: "50%" }}>
+        <div className="w-full max-w-sm mt-[15vh]">
         <h1
-          className="text-lg sm:text-xl font-bold mb-5 text-right"
+          className="text-lg sm:text-xl font-bold mb-5 text-left"
           style={{
             backgroundImage: "linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)",
             backgroundClip: "text",
@@ -25,7 +25,7 @@ export default function PrivacidadPage() {
           Política de Privacidad
         </h1>
 
-        <div className="space-y-4 text-white/70 text-[11px] leading-relaxed text-right">
+        <div className="space-y-4 text-white/70 text-[11px] leading-relaxed text-left">
           <section>
             <h2 className="text-white/90 font-semibold text-xs mb-1">Responsable del Tratamiento</h2>
             <p>Zocolski Art and Music Productions S.L.</p>
@@ -80,7 +80,7 @@ export default function PrivacidadPage() {
           </section>
         </div>
 
-        <div className="mt-6 text-right">
+        <div className="mt-6 text-left">
           <Link
             href="/registro"
             className="text-[#EAB3CB] hover:text-[#EAB3CB]/80 text-[11px] underline transition"

@@ -202,7 +202,7 @@ export default function RegistroPage() {
         }}
       />
       <div className="relative z-10 py-6 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-sm mx-auto">
+        <div className="max-w-[270px] mx-auto">
           {/* Logo/Title */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
