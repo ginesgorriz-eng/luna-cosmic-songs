@@ -16,26 +16,92 @@ export function useSpotify() {
   return useContext(SpotifyContext);
 }
 
+// Persistent container ID — lives in document.body, outside React's control
+const CONTAINER_ID = "spotify-persistent-container";
+
+function getOrCreateContainer(): HTMLDivElement {
+  let el = document.getElementById(CONTAINER_ID) as HTMLDivElement | null;
+  if (!el) {
+    el = document.createElement("div");
+    el.id = CONTAINER_ID;
+    // Start hidden off-screen
+    Object.assign(el.style, {
+      position: "fixed", left: "-9999px", top: "-9999px",
+      width: "1px", height: "1px", overflow: "hidden",
+      pointerEvents: "none", zIndex: "-1",
+    });
+    document.body.appendChild(el);
+  }
+  return el;
+}
+
+function hideContainer(el: HTMLDivElement) {
+  Object.assign(el.style, {
+    position: "fixed", left: "-9999px", top: "-9999px",
+    width: "1px", height: "1px", overflow: "hidden",
+    pointerEvents: "none", zIndex: "-1",
+  });
+}
+
+function showContainerInTarget(container: HTMLDivElement, target: HTMLElement) {
+  // Place container inside the portal target so it flows naturally
+  Object.assign(container.style, {
+    position: "static", left: "auto", top: "auto",
+    width: "100%", height: "auto", overflow: "visible",
+    pointerEvents: "auto", zIndex: "auto",
+  });
+  if (container.parentElement !== target) {
+    target.appendChild(container);
+  }
+}
+
 export function SpotifyProvider({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState(false);
   const pathname = usePathname();
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleUnlock = useCallback(() => {
     if (!unlocked) setUnlocked(true);
   }, [unlocked]);
 
+  // Create the iframe once in the persistent container (outside React)
+  useEffect(() => {
+    const container = getOrCreateContainer();
+    // Only create iframe if it doesn't exist yet
+    if (!container.querySelector("iframe")) {
+      const iframe = document.createElement("iframe");
+      iframe.style.borderRadius = "12px";
+      iframe.style.width = "100%";
+      iframe.style.maxWidth = "400px";
+      iframe.style.margin = "0 auto";
+      iframe.style.display = "block";
+      iframe.src = "https://open.spotify.com/embed/album/4mGvnfMaCkGXo1LHWjiOmD?utm_source=generator&theme=0";
+      iframe.height = "152";
+      iframe.frameBorder = "0";
+      iframe.allowFullscreen = true;
+      iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+      iframe.loading = "lazy";
+      container.appendChild(iframe);
+      // Store ref
+      (iframeRef as React.MutableRefObject<HTMLIFrameElement>).current = iframe;
+    } else {
+      (iframeRef as React.MutableRefObject<HTMLIFrameElement>).current =
+        container.querySelector("iframe") as HTMLIFrameElement;
+    }
+  }, []);
+
   // Listen for Spotify interaction
   useEffect(() => {
     const handleBlur = () => {
-      if (iframeRef.current && document.activeElement === iframeRef.current) {
+      const iframe = iframeRef.current;
+      if (iframe && document.activeElement === iframe) {
         handleUnlock();
       }
     };
     window.addEventListener("blur", handleBlur);
     const interval = setInterval(() => {
-      if (iframeRef.current && document.activeElement === iframeRef.current) {
+      const iframe = iframeRef.current;
+      if (iframe && document.activeElement === iframe) {
         handleUnlock();
       }
     }, 1000);
@@ -47,80 +113,50 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
 
   const isHomePage = pathname === "/";
 
-  // Position the iframe container:
-  // - On home: overlay it exactly on top of #spotify-portal-target using coordinates
-  // - On other pages: hide off-screen
-  // The iframe NEVER moves in the DOM — only its CSS changes.
+  // On home: move container into #spotify-portal-target (visible, interactive)
+  // On other pages: move it back to body hidden (keeps audio alive)
+  // CRITICAL: cleanup moves it back BEFORE React destroys the portal target
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const container = getOrCreateContainer();
 
     if (!isHomePage) {
-      // Hide off-screen but keep alive
-      container.style.position = "fixed";
-      container.style.left = "-9999px";
-      container.style.top = "-9999px";
-      container.style.width = "1px";
-      container.style.height = "1px";
-      container.style.overflow = "hidden";
-      container.style.pointerEvents = "none";
-      container.style.opacity = "0";
-      container.style.zIndex = "-1";
+      hideContainer(container);
+      // Move back to body if currently inside a page element
+      if (container.parentElement !== document.body) {
+        document.body.appendChild(container);
+      }
       return;
     }
 
-    // On home, position over the portal target
-    const positionOverTarget = () => {
+    // On home, wait for portal target to appear then move container there
+    let cancelled = false;
+    const tryMove = () => {
+      if (cancelled) return;
       const target = document.getElementById("spotify-portal-target");
-      if (!target || !container) return;
-      const rect = target.getBoundingClientRect();
-      container.style.position = "fixed";
-      container.style.left = rect.left + "px";
-      container.style.top = (rect.top + window.scrollY) + "px";
-      container.style.width = rect.width + "px";
-      container.style.height = rect.height + "px";
-      container.style.overflow = "visible";
-      container.style.pointerEvents = "auto";
-      container.style.opacity = "1";
-      container.style.zIndex = "10";
+      if (target) {
+        showContainerInTarget(container, target);
+      }
     };
-
-    // Position immediately and re-check on resize/scroll
-    const timer = setTimeout(positionOverTarget, 50);
-    const timer2 = setTimeout(positionOverTarget, 200);
-    const timer3 = setTimeout(positionOverTarget, 500);
-    window.addEventListener("resize", positionOverTarget);
-    window.addEventListener("scroll", positionOverTarget);
-    const interval = setInterval(positionOverTarget, 2000);
+    // Try multiple times as the DOM renders
+    tryMove();
+    const t1 = setTimeout(tryMove, 50);
+    const t2 = setTimeout(tryMove, 150);
+    const t3 = setTimeout(tryMove, 400);
 
     return () => {
-      clearTimeout(timer);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      window.removeEventListener("resize", positionOverTarget);
-      window.removeEventListener("scroll", positionOverTarget);
-      clearInterval(interval);
+      cancelled = true;
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      // CRITICAL: move container back to body BEFORE React unmounts the page
+      // (which would destroy the portal target and take our container with it)
+      hideContainer(container);
+      document.body.appendChild(container);
     };
   }, [isHomePage, pathname]);
 
   return (
     <SpotifyContext.Provider value={{ spotifyUnlocked: unlocked, iframeRef }}>
-      {/* Iframe container — NEVER moves in DOM, only CSS changes */}
-      <div
-        ref={containerRef}
-        style={{ position: "fixed", left: -9999, top: -9999, width: 1, height: 1, overflow: "hidden", pointerEvents: "none", opacity: 0, zIndex: -1, transition: "opacity 0.3s" }}
-      >
-        <iframe
-          ref={iframeRef as React.RefObject<HTMLIFrameElement>}
-          style={{ borderRadius: 12, width: "100%", maxWidth: 400, margin: "0 auto", display: "block" }}
-          src="https://open.spotify.com/embed/album/4mGvnfMaCkGXo1LHWjiOmD?utm_source=generator&theme=0"
-          height={152}
-          frameBorder={0}
-          allowFullScreen
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"
-        />
-      </div>
       {children}
     </SpotifyContext.Provider>
   );

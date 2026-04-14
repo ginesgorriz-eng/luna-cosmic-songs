@@ -31,8 +31,8 @@ else
   echo "✅ I1: SpotifyProvider en layout.tsx"
 fi
 
-# I2: Iframe de Spotify existe en SpotifyContext
-if ! grep -q "<iframe" src/contexts/SpotifyContext.tsx 2>/dev/null; then
+# I2: Iframe de Spotify created in SpotifyContext (via DOM or JSX)
+if ! grep -q "iframe" src/contexts/SpotifyContext.tsx 2>/dev/null; then
   echo "❌ I2 VIOLADA: No hay iframe en SpotifyContext.tsx"
   FAILURES=$((FAILURES + 1))
 else
@@ -40,11 +40,11 @@ else
 fi
 
 # I2b: Spotify persistence mechanism (CSS positioning, never unmounts)
-if ! grep -q "containerRef" src/contexts/SpotifyContext.tsx 2>/dev/null; then
-  echo "❌ I2b VIOLADA: containerRef no encontrado — mecanismo de persistencia Spotify roto"
+if ! grep -q "spotify-persistent-container" src/contexts/SpotifyContext.tsx 2>/dev/null; then
+  echo "❌ I2b VIOLADA: contenedor persistente no encontrado"
   FAILURES=$((FAILURES + 1))
 else
-  echo "✅ I2b: Persistencia Spotify via CSS (containerRef)"
+  echo "✅ I2b: Persistencia Spotify (contenedor fuera de React)"
 fi
 
 # I3: Link a registro existe en TableroJuego
