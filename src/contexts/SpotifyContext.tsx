@@ -16,7 +16,14 @@ export function useSpotify() {
   return useContext(SpotifyContext);
 }
 
-// Persistent container ID — lives in document.body, outside React's control
+// ─── APPROACH #5: NEVER MOVE THE IFRAME ───
+// The iframe container ALWAYS stays as a direct child of document.body.
+// On home page: position: fixed overlaying #spotify-portal-target visually.
+// On other pages: hidden off-screen (audio keeps playing).
+// CRITICAL: appendChild between parents causes browsers to reload iframes.
+// That's why approaches 2 & 4 failed. We must NEVER call appendChild on the
+// container after initial creation.
+
 const CONTAINER_ID = "spotify-persistent-container";
 
 function getOrCreateContainer(): HTMLDivElement {
@@ -24,7 +31,7 @@ function getOrCreateContainer(): HTMLDivElement {
   if (!el) {
     el = document.createElement("div");
     el.id = CONTAINER_ID;
-    // Start hidden off-screen
+    // Start hidden off-screen — ALWAYS a child of document.body
     Object.assign(el.style, {
       position: "fixed", left: "-9999px", top: "-9999px",
       width: "1px", height: "1px", overflow: "hidden",
@@ -43,16 +50,21 @@ function hideContainer(el: HTMLDivElement) {
   });
 }
 
-function showContainerInTarget(container: HTMLDivElement, target: HTMLElement) {
-  // Place container inside the portal target so it flows naturally
+// Position container visually over the target element using position:fixed
+// NEVER moves it in the DOM — just changes CSS
+function positionOverTarget(container: HTMLDivElement, target: HTMLElement) {
+  const rect = target.getBoundingClientRect();
   Object.assign(container.style, {
-    position: "static", left: "auto", top: "auto",
-    width: "100%", height: "auto", overflow: "visible",
-    pointerEvents: "auto", zIndex: "auto",
+    position: "fixed",
+    // rect already gives viewport-relative coords, perfect for fixed positioning
+    left: `${rect.left}px`,
+    top: `${rect.top}px`,
+    width: `${rect.width}px`,
+    height: `${Math.max(rect.height, 152)}px`,
+    overflow: "visible",
+    pointerEvents: "auto",
+    zIndex: "9999",
   });
-  if (container.parentElement !== target) {
-    target.appendChild(container);
-  }
 }
 
 export function SpotifyProvider({ children }: { children: React.ReactNode }) {
@@ -64,10 +76,10 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
     if (!unlocked) setUnlocked(true);
   }, [unlocked]);
 
-  // Create the iframe once in the persistent container (outside React)
+  // Create the iframe ONCE in the persistent container (outside React)
+  // This effect runs only once. The container + iframe live forever in document.body.
   useEffect(() => {
     const container = getOrCreateContainer();
-    // Only create iframe if it doesn't exist yet
     if (!container.querySelector("iframe")) {
       const iframe = document.createElement("iframe");
       iframe.style.borderRadius = "12px";
@@ -82,7 +94,6 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
       iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
       iframe.loading = "lazy";
       container.appendChild(iframe);
-      // Store ref
       (iframeRef as React.MutableRefObject<HTMLIFrameElement>).current = iframe;
     } else {
       (iframeRef as React.MutableRefObject<HTMLIFrameElement>).current =
@@ -90,7 +101,7 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Listen for Spotify interaction
+  // Listen for Spotify interaction (blur + polling)
   useEffect(() => {
     const handleBlur = () => {
       const iframe = iframeRef.current;
@@ -113,45 +124,53 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
 
   const isHomePage = pathname === "/";
 
-  // On home: move container into #spotify-portal-target (visible, interactive)
-  // On other pages: move it back to body hidden (keeps audio alive)
-  // CRITICAL: cleanup moves it back BEFORE React destroys the portal target
+  // On home: CSS-position container over #spotify-portal-target (visible, clickable)
+  // On other pages: hide off-screen (audio keeps playing, iframe untouched in DOM)
+  // CRITICAL: we NEVER appendChild/move the container — only change CSS properties
   useEffect(() => {
     const container = getOrCreateContainer();
 
     if (!isHomePage) {
       hideContainer(container);
-      // Move back to body if currently inside a page element
-      if (container.parentElement !== document.body) {
-        document.body.appendChild(container);
-      }
       return;
     }
 
-    // On home, wait for portal target to appear then move container there
+    // On home, position the container over the portal target
     let cancelled = false;
-    const tryMove = () => {
+    let rafId: number | null = null;
+
+    const align = () => {
       if (cancelled) return;
       const target = document.getElementById("spotify-portal-target");
       if (target) {
-        showContainerInTarget(container, target);
+        positionOverTarget(container, target);
       }
     };
-    // Try multiple times as the DOM renders
-    tryMove();
-    const t1 = setTimeout(tryMove, 50);
-    const t2 = setTimeout(tryMove, 150);
-    const t3 = setTimeout(tryMove, 400);
+
+    // Align on initial render (multiple attempts as DOM settles)
+    align();
+    const t1 = setTimeout(align, 50);
+    const t2 = setTimeout(align, 200);
+    const t3 = setTimeout(align, 500);
+
+    // Re-align on scroll/resize so it stays visually in place
+    const onScrollOrResize = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(align);
+    };
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize, { passive: true });
 
     return () => {
       cancelled = true;
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
-      // CRITICAL: move container back to body BEFORE React unmounts the page
-      // (which would destroy the portal target and take our container with it)
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+      // Just hide via CSS — NEVER move in DOM
       hideContainer(container);
-      document.body.appendChild(container);
     };
   }, [isHomePage, pathname]);
 

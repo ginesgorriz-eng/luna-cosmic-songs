@@ -92,7 +92,14 @@ export default function LoginPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setResetError(data.error || 'Error al solicitar restablecimiento.');
+        const rawErr = data.error || 'Error al solicitar restablecimiento.';
+        // Translate common Supabase errors to Spanish
+        const resetErrorMap: Record<string, string> = {
+          'email rate limit exceeded': 'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.',
+          'Email rate limit exceeded': 'Demasiados intentos. Espera unos minutos e inténtalo de nuevo.',
+          'For security purposes, you can only request this once every 60 seconds': 'Por seguridad, solo puedes solicitar esto una vez cada 60 segundos.',
+        };
+        setResetError(resetErrorMap[rawErr] || rawErr);
       } else {
         setResetMessage(
           'Se ha enviado un enlace de restablecimiento de contraseña a tu correo.'
