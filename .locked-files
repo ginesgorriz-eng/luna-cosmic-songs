@@ -1,0 +1,17 @@
+# FICHEROS PROTEGIDOS — Luna Kosmic Songs
+#
+# Estos ficheros contienen soluciones a bugs críticos o datos fundamentales.
+# NO se pueden reescribir con Write. Solo se permite Edit quirúrgico justificado.
+# Si necesitas reescribir uno de estos ficheros, PIDE AUTORIZACIÓN al usuario.
+#
+# Formato: ruta/fichero    # razón de la protección
+#
+# Última actualización: 14 abr 2026
+
+src/contexts/SpotifyContext.tsx       # Bug B1: persistencia Spotify (createPortal + CSS off-screen)
+src/app/layout.tsx                    # Invariante I1: SpotifyProvider envuelve toda la app
+src/app/page.tsx                      # Invariante I5: texto de Luna "Ostia Makinas..." intocable
+src/components/TableroJuego.tsx       # Bug B3: puntos dobles, validación 3 colores, fases
+src/lib/canciones-data.ts             # Datos de 15 canciones (5 pub + 10 inéditas)
+src/lib/game-logic.ts                 # Invariante I4: lógica de fases (1 pub + 3 inéditas)
+src/lib/supabase.ts                   # Auth + persistencia de sesiones + admin stats

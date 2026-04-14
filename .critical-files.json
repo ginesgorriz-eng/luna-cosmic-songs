@@ -1,0 +1,48 @@
+{
+  "description": "Hashes SHA256 e integridad de ficheros críticos. Generado: 14 abr 2026.",
+  "usage": "Comparar antes de editar: sha256sum FICHERO y verificar contra este JSON. Si no coincide, alguien lo modificó.",
+  "files": {
+    "src/contexts/SpotifyContext.tsx": {
+      "sha256": "f4ae17cdbad319a9c7999f816134aa9b994d2a8907d28f0fbaf74902582334cc",
+      "lines": 91,
+      "protection": "Bug B1: Spotify persistence",
+      "min_lines": 50
+    },
+    "src/app/layout.tsx": {
+      "sha256": "07e4b9d8450cfc7389378a2a1910c757f3f2100d211077315f0cac66180656ea",
+      "lines": 29,
+      "protection": "Invariante I1: SpotifyProvider",
+      "min_lines": 15
+    },
+    "src/app/page.tsx": {
+      "sha256": "098434c70832afaf514b7be8195fd5d8fbee9ab2d3fbc858992a4b7841baeb75",
+      "lines": 223,
+      "protection": "Invariante I5: texto de Luna",
+      "min_lines": 100
+    },
+    "src/components/TableroJuego.tsx": {
+      "sha256": "1e4d59e3b6f46efa78bbe1549ffd8fd3b37168eacf40a1b9458323b3d5638a55",
+      "lines": 541,
+      "protection": "Bugs B3: puntos, validación, fases",
+      "min_lines": 200
+    },
+    "src/lib/game-logic.ts": {
+      "sha256": "d367d57d678e2827b87e5915545be2b8f28d2e56daeb2ec4fddacf9dbec952cc",
+      "lines": 58,
+      "protection": "Invariante I4: lógica de fases",
+      "min_lines": 30
+    },
+    "src/lib/canciones-data.ts": {
+      "sha256": "b60e2b047ef851a006fcd3e9c16f8cb48d0c1e4cefd2679c92b58eb8673727d4",
+      "lines": 357,
+      "protection": "Datos de 15 canciones",
+      "min_lines": 100
+    },
+    "src/lib/supabase.ts": {
+      "sha256": "32c60ab98467441760e593c0fd1fcace37750d94cbb77f07d845492d29ddd488",
+      "lines": 449,
+      "protection": "Auth + persistencia",
+      "min_lines": 200
+    }
+  }
+}
