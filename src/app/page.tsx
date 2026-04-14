@@ -90,7 +90,7 @@ export default function HomePage() {
             className="glass rounded-2xl p-3 mb-5 max-w-md mx-auto text-center"
           >
             <p className="text-white/50 text-[11px] leading-relaxed italic">
-              &ldquo;Ostia Makinas, tengo un problema gordo. Mandé mis canciones en la nave Artemis y por un fallo técnico las letras han quedado flotando por el espacio. Necesito vuestra ayuda para recomponerlas. ¿Os animáis?&rdquo;
+              &ldquo;MÁKiNAS, tengo un problema desorbitado. Mandé mis canciones en la nave Artemis y por un fallo técnico las letras han quedado flotando por el espacio. Necesito vuestra ayuda para poder acabar el disco. ¿Os animáis?&rdquo;
             </p>
             <p className="text-cosmic-pink text-[11px] font-semibold mt-1">— Luna 🌙</p>
           </motion.div>
