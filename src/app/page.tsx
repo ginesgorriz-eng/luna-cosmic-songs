@@ -9,7 +9,7 @@ import { useSpotify } from "@/contexts/SpotifyContext";
 
 export default function HomePage() {
   const router = useRouter();
-  const { spotifyUnlocked, isMobile, manualUnlock } = useSpotify();
+  const { spotifyUnlocked, isMobile, markSpotifyClicked } = useSpotify();
   const [level, setLevel] = useState<"basico" | "avanzado">("basico");
   const [showSpotifyHint, setShowSpotifyHint] = useState(false);
 
@@ -110,6 +110,7 @@ export default function HomePage() {
                     href="https://open.spotify.com/album/4mGvnfMaCkGXo1LHWjiOmD"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={markSpotifyClicked}
                     className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-white text-sm font-semibold transition-transform active:scale-95"
                     style={{ background: "#1DB954" }}
                   >
@@ -118,14 +119,6 @@ export default function HomePage() {
                     </svg>
                     Abrir en Spotify
                   </a>
-                  {!spotifyUnlocked && (
-                    <button
-                      onClick={manualUnlock}
-                      className="text-white/50 text-xs underline hover:text-white/80 transition-colors"
-                    >
-                      Ya estoy escuchando — entrar al juego
-                    </button>
-                  )}
                 </div>
                 {spotifyUnlocked && (
                   <p className="text-center mt-3" style={{ color: "#68A542", fontSize: 12, fontWeight: 600 }}>

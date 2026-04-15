@@ -6,14 +6,14 @@ interface SpotifyContextType {
   spotifyUnlocked: boolean;
   iframeRef: React.RefObject<HTMLIFrameElement | null>;
   isMobile: boolean;
-  manualUnlock: () => void;
+  markSpotifyClicked: () => void;
 }
 
 const SpotifyContext = createContext<SpotifyContextType>({
   spotifyUnlocked: false,
   iframeRef: { current: null },
   isMobile: false,
-  manualUnlock: () => {},
+  markSpotifyClicked: () => {},
 });
 
 export function useSpotify() {
@@ -97,10 +97,25 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
     if (!unlocked) setUnlocked(true);
   }, [unlocked]);
 
-  // Manual unlock for mobile users who opened Spotify externally
-  const manualUnlock = useCallback(() => {
-    setUnlocked(true);
+  // Mobile: track if user clicked the Spotify deep link.
+  // When they return to the page (visibilitychange), auto-unlock.
+  const spotifyClickedRef = useRef(false);
+
+  const markSpotifyClicked = useCallback(() => {
+    spotifyClickedRef.current = true;
   }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const onVisChange = () => {
+      if (document.visibilityState === "visible" && spotifyClickedRef.current) {
+        spotifyClickedRef.current = false;
+        setUnlocked(true);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisChange);
+    return () => document.removeEventListener("visibilitychange", onVisChange);
+  }, [isMobile]);
 
   // Create the iframe ONCE in the persistent container (outside React)
   // This effect runs only once. The container + iframe live forever in document.body.
@@ -202,7 +217,7 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
   }, [isHomePage, isMobile, pathname]);
 
   return (
-    <SpotifyContext.Provider value={{ spotifyUnlocked: unlocked, iframeRef, isMobile, manualUnlock }}>
+    <SpotifyContext.Provider value={{ spotifyUnlocked: unlocked, iframeRef, isMobile, markSpotifyClicked }}>
       {children}
     </SpotifyContext.Provider>
   );
