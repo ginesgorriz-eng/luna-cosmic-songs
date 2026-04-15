@@ -157,12 +157,12 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const container = getOrCreateContainer();
 
-    if (!isHomePage) {
+    if (!isHomePage || isMobile) {
       hideContainer(container);
       return;
     }
 
-    // On home, position the container over the portal target
+    // On home (desktop only), position the container over the portal target
     let cancelled = false;
     let rafId: number | null = null;
 
@@ -199,7 +199,7 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
       // Just hide via CSS — NEVER move in DOM
       hideContainer(container);
     };
-  }, [isHomePage, pathname]);
+  }, [isHomePage, isMobile, pathname]);
 
   return (
     <SpotifyContext.Provider value={{ spotifyUnlocked: unlocked, iframeRef, isMobile, manualUnlock }}>
