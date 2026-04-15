@@ -55,7 +55,7 @@ export default function HomePage() {
           filter: "brightness(0.35)",
         }}
       />
-      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 pt-6 pb-8">
+      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -63,7 +63,7 @@ export default function HomePage() {
           className="max-w-2xl w-full"
         >
           {/* Title — smaller */}
-          <motion.div variants={itemVariants} className="text-center mb-6">
+          <motion.div variants={itemVariants} className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-black mb-2">
               <span
                 style={{
@@ -85,9 +85,9 @@ export default function HomePage() {
           {/* Luna's Message */}
           <motion.div
             variants={itemVariants}
-            className="glass rounded-2xl py-5 px-4 mb-2 max-w-md mx-auto text-center"
+            className="glass rounded-2xl py-5 px-4 mb-8 max-w-md mx-auto text-center"
           >
-            <p className="text-[11px] leading-relaxed italic" style={{ color: "#F1E9E4" }}>
+            <p className="text-xs md:text-[11px] leading-relaxed italic" style={{ color: "#F1E9E4" }}>
               &ldquo;MÁKiNAS, tengo un problema desorbitado. Mandé mis canciones en la nave Artemis y por un fallo técnico las letras han quedado flotando por el espacio. Necesito vuestra ayuda para poder acabar el disco. ¿Os animáis?&rdquo;
             </p>
             <p className="text-cosmic-pink text-[11px] font-semibold mt-2">— Luna 🌙</p>
@@ -132,7 +132,7 @@ export default function HomePage() {
           {/* Action Buttons — 3 in a row */}
           <motion.div
             variants={itemVariants}
-            className="max-w-lg mx-auto mt-8"
+            className="max-w-lg mx-auto mt-12"
           >
             {spotifyUnlocked && (
               <p className="text-center mb-3 text-xs font-semibold" style={{ color: "#EAB3CB" }}>
