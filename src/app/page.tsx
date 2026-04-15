@@ -87,7 +87,7 @@ export default function HomePage() {
             variants={itemVariants}
             className="glass rounded-2xl p-3 mb-5 max-w-md mx-auto text-center"
           >
-            <p className="text-white/50 text-[11px] leading-relaxed italic">
+            <p className="text-[11px] leading-relaxed italic" style={{ color: "#F6B258" }}>
               &ldquo;MÁKiNAS, tengo un problema desorbitado. Mandé mis canciones en la nave Artemis y por un fallo técnico las letras han quedado flotando por el espacio. Necesito vuestra ayuda para poder acabar el disco. ¿Os animáis?&rdquo;
             </p>
             <p className="text-cosmic-pink text-[11px] font-semibold mt-1">— Luna 🌙</p>
@@ -100,8 +100,8 @@ export default function HomePage() {
           >
             {isMobile ? (
               <>
-                <p className="text-white/40 text-xs text-center mb-3">
-                  Escucha CL34N en Spotify mientras juegas
+                <p className="text-xs text-center mb-3" style={{ color: "#FFCB3A" }}>
+                  Necesitas música para poder jugar. Dale al play
                 </p>
                 <div className="flex flex-col items-center gap-3">
                   <a
@@ -119,43 +119,24 @@ export default function HomePage() {
                   </a>
                 </div>
                 {spotifyUnlocked && (
-                  <p className="text-center mt-3" style={{ color: "#68A542", fontSize: 12, fontWeight: 600 }}>
-                    ✓ ¡Adelante, Makina!
+                  <p className="text-center mt-3 text-xs font-semibold" style={{ color: "#EAB3CB" }}>
+                    Spotify conectado. Comienza el viaje cósmico
                   </p>
                 )}
               </>
             ) : (
               <>
-                <p className="text-white/40 text-xs text-center mb-2">
-                  Escucha CL34N. Dale al play para poder jugar
+                <p className="text-xs text-center mb-2" style={{ color: "#FFCB3A" }}>
+                  Necesitas música para poder jugar. Dale al play
                 </p>
                 <div id="spotify-portal-target" style={{ minHeight: 152 }} />
                 {spotifyUnlocked && (
-                  <p className="text-center mt-2" style={{ color: "#68A542", fontSize: 12, fontWeight: 600 }}>
-                    ✓ Spotify conectado — ¡Adelante!
+                  <p className="text-center mt-2 text-xs font-semibold" style={{ color: "#EAB3CB" }}>
+                    Spotify conectado. Comienza el viaje cósmico
                   </p>
                 )}
               </>
             )}
-          </motion.div>
-
-          {/* Passive message — Comienza el Viaje Cósmico */}
-          <motion.div
-            variants={itemVariants}
-            className="text-center mb-3 max-w-lg mx-auto"
-          >
-            <p
-              className="text-sm font-bold italic"
-              style={{
-                background: "linear-gradient(90deg, #68A542, #EAB3CB, #F5D547)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                opacity: spotifyUnlocked ? 1 : 0.4,
-              }}
-            >
-              Comienza el Viaje Cósmico
-            </p>
           </motion.div>
 
           {/* Action Buttons — 3 in a row */}
@@ -172,17 +153,12 @@ export default function HomePage() {
                 Dale play a Spotify para empezar 🌙
               </motion.p>
             )}
-            <div className="flex gap-2">
+            <div className="flex gap-2" style={{ opacity: spotifyUnlocked ? 1 : 0.6, transition: "opacity 0.4s ease" }}>
               {/* Registrarme — #68A542 verde */}
               <button
                 onClick={() => handlePlay("register")}
                 className="flex-1 px-2 py-2.5 rounded-lg text-center transition-all cursor-pointer"
-                style={{
-                  background: spotifyUnlocked ? "#68A542" : "#1a1a2e",
-                  color: spotifyUnlocked ? "#fff" : "rgba(104,165,66,0.4)",
-                  border: spotifyUnlocked ? "none" : "1px solid rgba(104,165,66,0.2)",
-                  boxShadow: "none",
-                }}
+                style={{ background: "#68A542", color: "#fff", boxShadow: "none" }}
               >
                 <span className="block text-[11px] font-bold leading-tight">Registrarme como Mákina</span>
                 <span className="block text-[9px] mt-0.5" style={{ opacity: 0.7 }}>y jugar</span>
@@ -191,12 +167,7 @@ export default function HomePage() {
               <button
                 onClick={() => handlePlay("login")}
                 className="flex-1 px-2 py-2.5 rounded-lg text-center transition-all cursor-pointer"
-                style={{
-                  background: spotifyUnlocked ? "#8FCBE4" : "#1a1a2e",
-                  color: spotifyUnlocked ? "#1a1a2e" : "rgba(143,203,228,0.4)",
-                  border: spotifyUnlocked ? "none" : "1px solid rgba(143,203,228,0.2)",
-                  boxShadow: "none",
-                }}
+                style={{ background: "#8FCBE4", color: "#1a1a2e", boxShadow: "none" }}
               >
                 <span className="block text-[11px] font-bold leading-tight">Ya soy Mákina</span>
                 <span className="block text-[9px] mt-0.5" style={{ opacity: 0.7 }}>registrada</span>
@@ -205,12 +176,7 @@ export default function HomePage() {
               <button
                 onClick={() => handlePlay("guest")}
                 className="flex-1 px-2 py-2.5 rounded-lg text-center transition-all cursor-pointer"
-                style={{
-                  background: spotifyUnlocked ? "#FABF06" : "#1a1a2e",
-                  color: spotifyUnlocked ? "#1a1a2e" : "rgba(250,191,6,0.4)",
-                  border: spotifyUnlocked ? "none" : "1px solid rgba(250,191,6,0.2)",
-                  boxShadow: "none",
-                }}
+                style={{ background: "#FABF06", color: "#1a1a2e", boxShadow: "none" }}
               >
                 <span className="block text-[10px] font-semibold leading-tight">Jugar sin registrar</span>
                 <span className="block text-[8px] mt-0.5" style={{ opacity: 0.7 }}>sin puntos ni avances</span>
