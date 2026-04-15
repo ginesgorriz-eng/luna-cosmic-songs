@@ -5,11 +5,15 @@ import { usePathname } from "next/navigation";
 interface SpotifyContextType {
   spotifyUnlocked: boolean;
   iframeRef: React.RefObject<HTMLIFrameElement | null>;
+  isMobile: boolean;
+  manualUnlock: () => void;
 }
 
 const SpotifyContext = createContext<SpotifyContextType>({
   spotifyUnlocked: false,
   iframeRef: { current: null },
+  isMobile: false,
+  manualUnlock: () => {},
 });
 
 export function useSpotify() {
@@ -79,12 +83,24 @@ function positionOverTarget(container: HTMLDivElement, target: HTMLElement) {
 
 export function SpotifyProvider({ children }: { children: React.ReactNode }) {
   const [unlocked, setUnlocked] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Detect mobile on mount (client-side only)
+  useEffect(() => {
+    const mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    setIsMobile(mobile);
+  }, []);
 
   const handleUnlock = useCallback(() => {
     if (!unlocked) setUnlocked(true);
   }, [unlocked]);
+
+  // Manual unlock for mobile users who opened Spotify externally
+  const manualUnlock = useCallback(() => {
+    setUnlocked(true);
+  }, []);
 
   // Create the iframe ONCE in the persistent container (outside React)
   // This effect runs only once. The container + iframe live forever in document.body.
@@ -186,7 +202,7 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
   }, [isHomePage, pathname]);
 
   return (
-    <SpotifyContext.Provider value={{ spotifyUnlocked: unlocked, iframeRef }}>
+    <SpotifyContext.Provider value={{ spotifyUnlocked: unlocked, iframeRef, isMobile, manualUnlock }}>
       {children}
     </SpotifyContext.Provider>
   );
