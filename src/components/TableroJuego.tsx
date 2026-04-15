@@ -433,7 +433,7 @@ export default function TableroJuego({
             className="px-3 py-1.5 rounded-md text-xs font-semibold transition-all"
             style={
               level === 'basico'
-                ? { background: '#EAB3CBE6', color: '#fff', border: '1px solid #EAB3CB' }
+                ? { background: '#68A542E6', color: '#fff', border: '1px solid #68A542' }
                 : { color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.15)' }
             }
           >

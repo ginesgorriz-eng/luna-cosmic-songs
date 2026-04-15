@@ -55,7 +55,7 @@ export default function HomePage() {
           filter: "brightness(0.35)",
         }}
       />
-      <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
+      <div className="relative z-10 min-h-screen flex items-start justify-center px-4 pt-6 pb-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -82,25 +82,25 @@ export default function HomePage() {
             />
           </motion.div>
 
-          {/* Luna's Message — smaller, italic */}
+          {/* Luna's Message */}
           <motion.div
             variants={itemVariants}
-            className="glass rounded-2xl p-3 mb-5 max-w-md mx-auto text-center"
+            className="glass rounded-2xl py-5 px-4 mb-2 max-w-md mx-auto text-center"
           >
-            <p className="text-[11px] leading-relaxed italic" style={{ color: "#F6B258" }}>
+            <p className="text-[11px] leading-relaxed italic" style={{ color: "#F1E9E4" }}>
               &ldquo;MÁKiNAS, tengo un problema desorbitado. Mandé mis canciones en la nave Artemis y por un fallo técnico las letras han quedado flotando por el espacio. Necesito vuestra ayuda para poder acabar el disco. ¿Os animáis?&rdquo;
             </p>
-            <p className="text-cosmic-pink text-[11px] font-semibold mt-1">— Luna 🌙</p>
+            <p className="text-cosmic-pink text-[11px] font-semibold mt-2">— Luna 🌙</p>
           </motion.div>
 
           {/* Spotify player — PC: iframe embed / Mobile: deep link to app */}
           <motion.div
             variants={itemVariants}
-            className="max-w-md mx-auto mb-5"
+            className="max-w-md mx-auto"
           >
             {isMobile ? (
               <>
-                <p className="text-xs text-center mb-3" style={{ color: "#FFCB3A" }}>
+                <p className="text-xs text-center mb-3" style={{ color: "#68A542" }}>
                   Necesitas música para poder jugar. Dale al play
                 </p>
                 <div className="flex flex-col items-center gap-3">
@@ -118,23 +118,13 @@ export default function HomePage() {
                     Abrir en Spotify
                   </a>
                 </div>
-                {spotifyUnlocked && (
-                  <p className="text-center mt-3 text-xs font-semibold" style={{ color: "#EAB3CB" }}>
-                    Spotify conectado. Comienza el viaje cósmico
-                  </p>
-                )}
               </>
             ) : (
               <>
-                <p className="text-xs text-center mb-2" style={{ color: "#FFCB3A" }}>
+                <p className="text-xs text-center mb-1" style={{ color: "#68A542" }}>
                   Necesitas música para poder jugar. Dale al play
                 </p>
                 <div id="spotify-portal-target" style={{ minHeight: 152 }} />
-                {spotifyUnlocked && (
-                  <p className="text-center mt-2 text-xs font-semibold" style={{ color: "#EAB3CB" }}>
-                    Spotify conectado. Comienza el viaje cósmico
-                  </p>
-                )}
               </>
             )}
           </motion.div>
@@ -142,16 +132,17 @@ export default function HomePage() {
           {/* Action Buttons — 3 in a row */}
           <motion.div
             variants={itemVariants}
-            className="max-w-lg mx-auto"
+            className="max-w-lg mx-auto mt-8"
           >
+            {spotifyUnlocked && (
+              <p className="text-center mb-3 text-xs font-semibold" style={{ color: "#EAB3CB" }}>
+                Spotify conectado. Comienza el viaje cósmico
+              </p>
+            )}
             {showSpotifyHint && !spotifyUnlocked && (
-              <motion.p
-                initial={{ opacity: 0, y: -5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-cosmic-pink text-xs font-medium text-center mb-2"
-              >
+              <p className="text-xs font-medium text-center mb-2" style={{ color: "#EAB3CB" }}>
                 Dale play a Spotify para empezar 🌙
-              </motion.p>
+              </p>
             )}
             <div className="flex gap-2" style={{ opacity: spotifyUnlocked ? 1 : 0.6, transition: "opacity 0.4s ease" }}>
               {/* Registrarme — #68A542 verde */}
