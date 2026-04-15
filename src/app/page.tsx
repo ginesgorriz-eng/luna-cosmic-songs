@@ -4,13 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
-import LevelSelector from "@/components/LevelSelector";
 import { useSpotify } from "@/contexts/SpotifyContext";
 
 export default function HomePage() {
   const router = useRouter();
   const { spotifyUnlocked, isMobile, markSpotifyClicked } = useSpotify();
-  const [level, setLevel] = useState<"basico" | "avanzado">("basico");
   const [showSpotifyHint, setShowSpotifyHint] = useState(false);
 
   const handlePlay = (mode: "register" | "login" | "guest") => {
@@ -23,7 +21,7 @@ export default function HomePage() {
     } else if (mode === "login") {
       router.push("/login");
     } else {
-      router.push(`/juego?level=${level}`);
+      router.push("/juego");
     }
   };
 
@@ -139,37 +137,6 @@ export default function HomePage() {
                 )}
               </>
             )}
-          </motion.div>
-
-          {/* Level Selector — two pills side by side */}
-          <motion.div
-            variants={itemVariants}
-            className="flex gap-3 max-w-sm mx-auto mb-5"
-          >
-            <button
-              onClick={() => setLevel("basico")}
-              className="flex-1 px-3 py-2.5 rounded-lg text-center transition-all cursor-pointer"
-              style={
-                level === "basico"
-                  ? { background: "#EAB3CB", color: "#1a1a2e", boxShadow: "none" }
-                  : { background: "#1a1a2e", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(234,179,203,0.3)" }
-              }
-            >
-              <span className="block text-xs font-semibold">Nivel Fácil</span>
-              <span className="block text-[10px] italic mt-0.5" style={{ opacity: 0.65 }}>8 líneas</span>
-            </button>
-            <button
-              onClick={() => setLevel("avanzado")}
-              className="flex-1 px-3 py-2.5 rounded-lg text-center transition-all cursor-pointer"
-              style={
-                level === "avanzado"
-                  ? { background: "#F5D547", color: "#1a1a2e", boxShadow: "none" }
-                  : { background: "#1a1a2e", color: "rgba(255,255,255,0.5)", border: "1px solid rgba(245,213,71,0.3)" }
-              }
-            >
-              <span className="block text-xs font-semibold">Nivel SuperMákina</span>
-              <span className="block text-[10px] italic mt-0.5" style={{ opacity: 0.65 }}>canción entera</span>
-            </button>
           </motion.div>
 
           {/* Passive message — Comienza el Viaje Cósmico */}

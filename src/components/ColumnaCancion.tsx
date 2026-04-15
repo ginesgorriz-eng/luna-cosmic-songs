@@ -135,10 +135,10 @@ export default function ColumnaCancion({
           className="w-full py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer"
           style={
             isValidated
-              ? { background: "#68A54240", color: "#68A542", border: "1px solid #68A54260" }
+              ? { background: "#68A542E6", color: "#fff", border: "1px solid #68A542" }
               : lineas.length === 0
-              ? { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}60`, color: "rgba(255,255,255,0.7)", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}80` }
-              : { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}B0`, color: "#fff", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}DD` }
+              ? { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}E6`, color: "rgba(255,255,255,0.9)", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}` }
+              : { background: `${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}E6`, color: "#fff", border: `1px solid ${BUTTON_COLORS[columnIndex % BUTTON_COLORS.length]}` }
           }
         >
           {isValidated ? "¡Lo tengo! ✓" : BUTTON_TEXTS[columnIndex % BUTTON_TEXTS.length]}

@@ -409,12 +409,12 @@ export default function TableroJuego({
                   href="/registro"
                   className="inline-block px-2.5 py-1 rounded-md transition-all"
                   style={{
-                    background: "rgba(234,179,203,0.2)",
-                    border: "1px solid rgba(234,179,203,0.5)",
+                    background: "rgba(234,179,203,0.9)",
+                    border: "1px solid rgba(234,179,203,1)",
                   }}
                 >
-                  <span className="block text-[10px] font-bold text-[#EAB3CB]">Regístrate</span>
-                  <span className="block text-[7px] text-[#EAB3CB]/60 leading-tight mt-0.5">guarda puntos y transfórmate<br/>en SuperMákina</span>
+                  <span className="block text-[10px] font-bold text-[#1a1a2e]">Regístrate</span>
+                  <span className="block text-[7px] text-[#1a1a2e]/70 leading-tight mt-0.5">guarda puntos y transfórmate<br/>en SuperMákina</span>
                 </Link>
               </>
             )}
@@ -433,7 +433,7 @@ export default function TableroJuego({
             className="px-3 py-1.5 rounded-md text-xs font-semibold transition-all"
             style={
               level === 'basico'
-                ? { background: '#EAB3CB50', color: '#fff', border: '1px solid #EAB3CB90' }
+                ? { background: '#EAB3CBE6', color: '#fff', border: '1px solid #EAB3CB' }
                 : { color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.15)' }
             }
           >
@@ -444,7 +444,7 @@ export default function TableroJuego({
             className="px-3 py-1.5 rounded-md text-xs font-semibold transition-all"
             style={
               level === 'avanzado'
-                ? { background: '#D6334850', color: '#fff', border: '1px solid #D6334890' }
+                ? { background: '#D63348E6', color: '#fff', border: '1px solid #D63348' }
                 : { color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.15)' }
             }
           >
