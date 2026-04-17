@@ -2,18 +2,18 @@
 
 > **LEE ESTE FICHERO COMPLETO ANTES DE HACER NADA MÁS.**
 > Este es tu briefing de sesión. Contiene todo lo que necesitas para no romper cosas.
-> Última actualización: 14 abr 2026
+> Última actualización: 15 abr 2026
 
 ---
 
 ## 1. ESTADO ACTUAL DEL PROYECTO
 
 - **Nombre:** Luna Ki misión lyrics
-- **Estado:** M7 completado (~70% del proyecto total)
-- **Última sesión:** 14 abr 2026
-- **Deploy:** Vercel (sincronizado con GitHub)
+- **Estado:** M7 completado (~70% del proyecto total). Lanzamiento público 15 abr 2026.
+- **Última sesión:** 15 abr 2026
+- **Deploy:** Vercel (sincronizado con GitHub), branch `pruebas-Spotify` activo
 - **Bugs activos:** 0 confirmados
-- **Bugs resueltos que NO deben reintroducirse:** 3 + solución definitiva Spotify (ver sección 2.1)
+- **Bugs resueltos que NO deben reintroducirse:** 3 + solución definitiva Spotify (ver sección 2.1) + solución Spotify móvil (ver sección 2.4)
 
 ---
 
@@ -71,6 +71,26 @@ Si difieren más de 3 líneas → recuperar de git: `git checkout HEAD -- FICHER
 ### 2.3 Puntos dobles al validar (B3)
 **Fichero clave:** `src/components/TableroJuego.tsx`
 **Solución:** Variable `ptsGivenForSong` (Set) que trackea qué canciones ya dieron puntos. Se resetea al cambiar de fase.
+
+### 2.4 Spotify embed en móvil solo reproduce previews de 15-20s (B4) — SOLUCIÓN DEFINITIVA
+**Severidad:** CRÍTICA
+**Ficheros clave:** `src/contexts/SpotifyContext.tsx` (224 líneas), `src/app/page.tsx`
+
+**Problema:** En móvil (iOS Safari, Chrome), las canciones del embed de Spotify saltan cada 10-20 segundos a la siguiente canción.
+
+**Causa raíz descubierta (15 abr 2026):** El embed de Spotify tiene dos modos: (1) modo conectado (detecta sesión Premium del usuario → canciones completas) y (2) modo preview (sin sesión → snippets de 15-20s). En PC el navegador tiene la cookie de sesión de Spotify. En móvil, Safari/Chrome no comparten cookies de terceros con iframes, así que el embed siempre cae en modo preview. **No es un bug nuestro** — es una limitación del embed + políticas de cookies de terceros en móvil.
+
+**Enfoques probados que NO funcionaron:**
+1. ❌ Quitar `loading="lazy"` del iframe — no cambia el modo preview
+2. ❌ Contenedor oculto de 10×10px — no cambia el modo preview
+3. ❌ Contenedor oculto de 300×80px — no cambia el modo preview
+
+**Solución implementada (enfoque híbrido):**
+- **PC:** iframe embed tal cual (funciona bien si el usuario tiene sesión de Spotify en el navegador)
+- **Móvil:** detección con `navigator.userAgent`, se muestra botón "Abrir en Spotify" (deep link al álbum) que abre la app nativa del usuario. Auto-desbloqueo del Spotify gate via `visibilitychange` cuando el usuario vuelve al navegador.
+- **SpotifyContext:** expone `isMobile`, `markSpotifyClicked`. Oculta el contenedor del iframe en móvil (`if (!isHomePage || isMobile) hideContainer`).
+
+**Regla:** NO se puede forzar la sesión de Spotify desde nuestro código. El embed decide por su cuenta.
 
 ---
 

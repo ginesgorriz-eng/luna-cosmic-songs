@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
+// Ver nota en /api/admin/stats/route.ts — sin esto el CSV se congela
+// en el primer build y no refleja registros nuevos.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 function getAdminSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!

@@ -103,7 +103,7 @@ export default function AdminPage() {
   const fetchStats = async () => {
     setStatsLoading(true)
     try {
-      const response = await fetch('/api/admin/stats')
+      const response = await fetch('/api/admin/stats', { cache: 'no-store' })
       if (response.ok) {
         const data = await response.json()
         setStats(data)

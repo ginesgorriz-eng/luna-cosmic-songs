@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { isSupabaseConfigured } from '@/lib/supabase'
 
+// Next.js 14 cachea GET por defecto en Vercel. Sin esto el admin panel sirve
+// datos congelados en el primer build y los nuevos registros nunca aparecen.
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 function getAdminSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
