@@ -40,6 +40,10 @@ interface DashboardStats {
     puntos_acumulados: number
     minutos_jugados: number
   }>
+  totalRegistros?: number
+  paginaActual?: number
+  totalPaginas?: number
+  pageSize?: number
 }
 
 const COLORS = ['#68A542', '#EAB3CB', '#F5D547', '#8b5cf6', '#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A']
@@ -52,24 +56,27 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false)
   const [stats, setStats] = useState<DashboardStats | null>(null)
   const [statsLoading, setStatsLoading] = useState(false)
+  const [page, setPage] = useState(0)
 
-  // Auto-refresh every 60 seconds
+  // Auto-refresh every 60 seconds (mantiene la pagina actual)
   useEffect(() => {
     if (!isAuthenticated) return
 
     const interval = setInterval(() => {
-      fetchStats()
+      fetchStats(page)
     }, 60000)
 
     return () => clearInterval(interval)
-  }, [isAuthenticated])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, page])
 
-  // Fetch stats on authentication
+  // Fetch stats on authentication o cambio de pagina
   useEffect(() => {
     if (isAuthenticated) {
-      fetchStats()
+      fetchStats(page)
     }
-  }, [isAuthenticated])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, page])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -100,10 +107,10 @@ export default function AdminPage() {
     }
   }
 
-  const fetchStats = async () => {
+  const fetchStats = async (pageNum: number = page) => {
     setStatsLoading(true)
     try {
-      const response = await fetch('/api/admin/stats', { cache: 'no-store' })
+      const response = await fetch(`/api/admin/stats?page=${pageNum}`, { cache: 'no-store' })
       if (response.ok) {
         const data = await response.json()
         setStats(data)
@@ -479,8 +486,36 @@ export default function AdminPage() {
             </table>
           </div>
 
-          <div className="mt-4 text-white/60 text-sm">
-            Mostrando {stats.registrosRecientes.length} registros recientes
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="text-white/60 text-sm">
+              {(() => {
+                const total = stats.totalRegistros ?? stats.registrosRecientes.length
+                const ps = stats.pageSize ?? 50
+                const pa = stats.paginaActual ?? 0
+                const from = stats.registrosRecientes.length === 0 ? 0 : pa * ps + 1
+                const to = pa * ps + stats.registrosRecientes.length
+                return `Mostrando ${from}–${to} de ${total} registros`
+              })()}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPage((p) => Math.max(0, p - 1))}
+                disabled={(stats.paginaActual ?? 0) <= 0 || statsLoading}
+                className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-medium hover:bg-white/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                ← Anterior
+              </button>
+              <span className="text-white/70 text-xs min-w-[80px] text-center">
+                Pag. {(stats.paginaActual ?? 0) + 1} / {stats.totalPaginas ?? 1}
+              </span>
+              <button
+                onClick={() => setPage((p) => Math.min((stats.totalPaginas ?? 1) - 1, p + 1))}
+                disabled={(stats.paginaActual ?? 0) >= (stats.totalPaginas ?? 1) - 1 || statsLoading}
+                className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-medium hover:bg-white/20 transition disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Siguiente →
+              </button>
+            </div>
           </div>
         </div>
       </motion.div>

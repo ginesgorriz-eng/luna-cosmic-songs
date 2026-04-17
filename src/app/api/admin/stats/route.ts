@@ -13,11 +13,16 @@ function getAdminSupabase() {
   return createClient(url, serviceKey);
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    // Pagination: ?page=0,1,2... (50 registros por pagina)
+    const { searchParams } = new URL(request.url)
+    const page = Math.max(0, parseInt(searchParams.get('page') || '0', 10))
+    const pageSize = 50
+
     // If Supabase is not configured, return mock data
     if (!isSupabaseConfigured()) {
-      return NextResponse.json(getMockData())
+      return NextResponse.json(getMockData(page, pageSize))
     }
 
     const supabase = getAdminSupabase()
@@ -109,8 +114,12 @@ export async function GET() {
       }
     })
 
-    // Recent registrations (last 50) with minutes played
-    const registrosRecientes = usuariosData.slice(0, 50).map((u: any) => ({
+    // Paginated registrations with minutes played
+    const totalRegistros = usuariosData.length
+    const totalPaginas = Math.max(1, Math.ceil(totalRegistros / pageSize))
+    const paginaActual = Math.min(page, totalPaginas - 1)
+    const start = paginaActual * pageSize
+    const registrosRecientes = usuariosData.slice(start, start + pageSize).map((u: any) => ({
       id: u.id,
       nombre: u.nombre || 'N/A',
       email: u.email || 'N/A',
@@ -134,14 +143,20 @@ export async function GET() {
       usuariosPorCiudad,
       usuariosPorOrigen,
       registrosRecientes,
+      totalRegistros,
+      paginaActual,
+      totalPaginas,
+      pageSize,
     })
   } catch (error) {
     console.error('Stats error:', error)
-    return NextResponse.json(getMockData())
+    const { searchParams } = new URL(request.url)
+    const page = Math.max(0, parseInt(searchParams.get('page') || '0', 10))
+    return NextResponse.json(getMockData(page, 50))
   }
 }
 
-function getMockData() {
+function getMockData(page: number = 0, pageSize: number = 50) {
   const today = new Date()
   const last30Days = Array.from({ length: 30 }, (_, i) => {
     const d = new Date(today)
@@ -184,15 +199,22 @@ function getMockData() {
       { origen: 'Google', count: 200 },
       { origen: 'TikTok', count: 97 },
     ],
-    registrosRecientes: Array.from({ length: 50 }, (_, i) => ({
-      id: `user_${i}`,
-      nombre: `Usuario ${i + 1}`,
-      email: `user${i + 1}@example.com`,
-      ciudad: ['Madrid', 'Barcelona', 'Valencia', 'Bilbao'][Math.floor(Math.random() * 4)],
-      pais: 'España',
-      fecha_registro: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-      puntos_acumulados: Math.floor(Math.random() * 5000) + 100,
-    })),
+    registrosRecientes: Array.from({ length: pageSize }, (_, i) => {
+      const idx = page * pageSize + i
+      return {
+        id: `user_${idx}`,
+        nombre: `Usuario ${idx + 1}`,
+        email: `user${idx + 1}@example.com`,
+        ciudad: ['Madrid', 'Barcelona', 'Valencia', 'Bilbao'][idx % 4],
+        pais: 'España',
+        fecha_registro: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+        puntos_acumulados: Math.floor(Math.random() * 5000) + 100,
+      }
+    }),
+    totalRegistros: 1247,
+    paginaActual: Math.min(page, Math.ceil(1247 / pageSize) - 1),
+    totalPaginas: Math.ceil(1247 / pageSize),
+    pageSize,
   }
 }
 
